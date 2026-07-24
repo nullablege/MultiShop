@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="AutoMapper" Version="16.2.0" />
+    <PackageVersion Include="MongoDB.Driver" Version="3.10.0" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,20 @@
+# Build output
+**/[Bb]in/
+**/[Oo]bj/
+
+# Visual Studio and user-specific files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.csproj.user
+
+# Local configuration and secrets
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/secrets.json
+.env
+.env.*
+*.pfx
+*.snk
