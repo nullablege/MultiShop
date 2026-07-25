@@ -11,13 +11,15 @@ namespace MultiShop.Catalog.Mapping
     {
         public CatalogMappingProfile() {
             //Category
-            CreateMap<CreateCategoryDto, Category>();
+            CreateMap<CreateCategoryDto, Category>()
+                .ForMember(destination => destination.CategoryId, options => options.Ignore());
             CreateMap<UpdateCategoryDto, Category>();
             CreateMap<Category, ResultCategoryDto>();
             CreateMap<Category, GetByIdCategoryDto>();
 
             //Product 
-            CreateMap<CreateProductDto,  Product>();
+            CreateMap<CreateProductDto,  Product>()
+                .ForMember(destination => destination.ProductId, options => options.Ignore());
             CreateMap<UpdateProductDto, Product>();
             CreateMap<Product, GetByIdProductDto>();
             CreateMap<Product, ResultProductDto>();
