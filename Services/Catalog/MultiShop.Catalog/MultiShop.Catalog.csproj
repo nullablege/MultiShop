@@ -10,5 +10,6 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="MongoDB.Driver" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 </Project>

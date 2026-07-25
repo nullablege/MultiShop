@@ -9,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 builder.Services
         .AddOptions<MongoDbSettings>()
         .Bind(builder.Configuration.GetSection(MongoDbSettings.SectionName))
@@ -59,6 +63,9 @@ if (app.Environment.IsDevelopment())
     app.Services
         .GetRequiredService<AutoMapper.IConfigurationProvider>()
         .AssertConfigurationIsValid();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
