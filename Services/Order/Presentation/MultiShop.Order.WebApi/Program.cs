@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MultiShop.Order.Application.Features.CQRS.Handlers.AddressHandlers;
 using MultiShop.Order.Application.Interfaces;
 using MultiShop.Order.Persistence.Context;
 using MultiShop.Order.Persistence.Repositories;
@@ -25,6 +26,10 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+builder.Services.AddMediatR(configuration =>
+{
+    configuration.RegisterServicesFromAssemblyContaining<GetAddressQueryHandler>();
+});
 
 var app = builder.Build();
 
