@@ -1,0 +1,11 @@
+CREATE TABLE dbo.Coupons
+(
+    CouponId INT IDENTITY(1, 1) NOT NULL,
+    Code NVARCHAR(50) NOT NULL,
+    Rate INT NOT NULL,
+    IsActive BIT NOT NULL CONSTRAINT DF_Coupons_IsActive DEFAULT (1),
+    ValidDate DATETIME2(7) NOT NULL,
+    CONSTRAINT PK_Coupons PRIMARY KEY CLUSTERED (CouponId ASC),
+    CONSTRAINT UQ_Coupons_Code UNIQUE (Code),
+    CONSTRAINT CK_Coupons_Rate CHECK (Rate BETWEEN 1 AND 100)
+);
