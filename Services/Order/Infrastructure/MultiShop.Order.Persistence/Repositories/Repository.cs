@@ -30,7 +30,6 @@ namespace MultiShop.Order.Persistence.Repositories
         {
             _context.Set<T>().Remove(entity);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
-            
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default)
