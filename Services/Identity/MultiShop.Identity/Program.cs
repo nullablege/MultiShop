@@ -73,6 +73,11 @@ builder.Services.AddOpenIddict()
                 "order_api");
 
 
+    })
+    .AddValidation(options =>
+    {
+        options.UseLocalServer();
+        options.UseAspNetCore();
     });
 
 builder.Services
