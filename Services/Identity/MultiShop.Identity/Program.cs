@@ -44,6 +44,8 @@ builder.Services.AddOpenIddict()
         options.AllowAuthorizationCodeFlow()
         .RequireProofKeyForCodeExchange();
 
+        options.AllowClientCredentialsFlow();
+
         if (builder.Environment.IsDevelopment())
         {
             options.AddDevelopmentEncryptionCertificate()
@@ -96,10 +98,22 @@ builder.Services
         "OpenIddict WebUI PostLogoutRedirectUri geçerli değil.")
     .ValidateOnStart();
 
+builder.Services
+    .AddOptions<OpenIddictVisitorClientOptions>()
+    .BindConfiguration(OpenIddictVisitorClientOptions.SectionName)
+    .Validate(
+        options => !string.IsNullOrWhiteSpace(options.ClientId),
+        "OpenIddict Visitor ClientId bulunamadı.")
+    .Validate(
+        options => !string.IsNullOrWhiteSpace(options.ClientSecret),
+        "OpenIddict Visitor ClientSecret bulunamadı.")
+    .ValidateOnStart();
+
 builder.Services.AddScoped<IOpenIddictPrincipalService, OpenIddictPrincipalService>();
 
 
 builder.Services.AddHostedService<OpenIddictClientInitializer>();
+builder.Services.AddHostedService<IdentityRoleInitializer>();
 
 var app = builder.Build();
 

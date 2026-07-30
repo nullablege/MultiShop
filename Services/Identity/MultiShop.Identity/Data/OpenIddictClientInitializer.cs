@@ -9,17 +9,54 @@ namespace MultiShop.Identity.Data
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly OpenIddictClientOptions _openIddictClientOptions;
+        private readonly OpenIddictVisitorClientOptions _openIddictVisitorClientOptions;
 
-        public OpenIddictClientInitializer(IServiceScopeFactory serviceScopeFactory, IOptions<OpenIddictClientOptions> openIddictClientOptions)
+        public OpenIddictClientInitializer(IServiceScopeFactory serviceScopeFactory, IOptions<OpenIddictClientOptions> openIddictClientOptions, IOptions<OpenIddictVisitorClientOptions> openIddictVisitorClientOptions)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _openIddictClientOptions = openIddictClientOptions.Value;
+            _openIddictVisitorClientOptions = openIddictVisitorClientOptions.Value;
+        }
+
+        private async Task CreateVisitorClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken = default)
+        {
+            var application = await applicationManager.FindByClientIdAsync(_openIddictVisitorClientOptions.ClientId, cancellationToken);
+
+            if (application != null)
+            {
+                return;
+            }
+
+            var descriptor = new OpenIddictApplicationDescriptor
+            {
+                ClientType = OpenIddictConstants.ClientTypes.Confidential,
+                ClientId = _openIddictVisitorClientOptions.ClientId,
+                ClientSecret = _openIddictVisitorClientOptions.ClientSecret,
+                DisplayName = "MultiShop Visitor Client",
+
+                Permissions =
+                {
+                    OpenIddictConstants.Permissions.Endpoints.Token,
+                    OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "catalog_api"
+                }
+            };
+
+            await applicationManager.CreateAsync(descriptor, cancellationToken);
+
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await using var scope = _serviceScopeFactory.CreateAsyncScope();
             var applicationManager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
+
+            await CreateWebClientAsync(applicationManager, cancellationToken);
+            await CreateVisitorClientAsync(applicationManager, cancellationToken);
+        }
+
+        private async Task CreateWebClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken)
+        {
             var application = await applicationManager.FindByClientIdAsync(_openIddictClientOptions.ClientId, cancellationToken);
             if(application != null)
             {
