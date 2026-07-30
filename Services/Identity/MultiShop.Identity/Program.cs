@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MultiShop.Identity.Authorization;
 using MultiShop.Identity.Configuration;
 using MultiShop.Identity.Data;
 using MultiShop.Identity.Models;
@@ -68,6 +69,7 @@ builder.Services.AddOpenIddict()
                 OpenIddictConstants.Scopes.Email,
                 OpenIddictConstants.Scopes.Profile,
                 OpenIddictConstants.Scopes.Roles,
+                IdentityAuthorizationConstants.IdentityApiScope,
                 "catalog_api",
                 "discount_api",
                 "order_api");
@@ -119,6 +121,20 @@ builder.Services.AddScoped<IOpenIddictPrincipalService, OpenIddictPrincipalServi
 
 builder.Services.AddHostedService<OpenIddictClientInitializer>();
 builder.Services.AddHostedService<IdentityRoleInitializer>();
+
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        IdentityAuthorizationConstants.IdentityApiPolicy,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireAssertion(context =>
+                context.User.HasScope(
+                    IdentityAuthorizationConstants.IdentityApiScope));
+        });
+});
 
 var app = builder.Build();
 
