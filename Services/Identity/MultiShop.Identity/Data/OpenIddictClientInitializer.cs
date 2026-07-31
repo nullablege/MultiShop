@@ -10,12 +10,16 @@ namespace MultiShop.Identity.Data
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly OpenIddictClientOptions _openIddictClientOptions;
         private readonly OpenIddictVisitorClientOptions _openIddictVisitorClientOptions;
+        private readonly OpenIddictPostmanClientOptions _openIddictPostmanClientOptions;
+        private readonly IHostEnvironment _hostEnvironment;
 
-        public OpenIddictClientInitializer(IServiceScopeFactory serviceScopeFactory, IOptions<OpenIddictClientOptions> openIddictClientOptions, IOptions<OpenIddictVisitorClientOptions> openIddictVisitorClientOptions)
+        public OpenIddictClientInitializer(IServiceScopeFactory serviceScopeFactory, IOptions<OpenIddictClientOptions> openIddictClientOptions, IOptions<OpenIddictVisitorClientOptions> openIddictVisitorClientOptions, IOptions<OpenIddictPostmanClientOptions> openIddictPostmanClientOptions, IHostEnvironment hostEnvironment)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _openIddictClientOptions = openIddictClientOptions.Value;
             _openIddictVisitorClientOptions = openIddictVisitorClientOptions.Value;
+            _openIddictPostmanClientOptions = openIddictPostmanClientOptions.Value;
+            _hostEnvironment = hostEnvironment;
         }
 
         private async Task CreateVisitorClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken = default)
@@ -68,6 +72,55 @@ namespace MultiShop.Identity.Data
 
             await CreateWebClientAsync(applicationManager, cancellationToken);
             await CreateVisitorClientAsync(applicationManager, cancellationToken);
+
+            if (_hostEnvironment.IsDevelopment())
+            {
+                await CreatePostmanClientAsync(applicationManager, cancellationToken);
+            }
+        }
+
+        private async Task CreatePostmanClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken)
+        {
+            var application = await applicationManager.FindByClientIdAsync(_openIddictPostmanClientOptions.ClientId, cancellationToken);
+
+            var descriptor = new OpenIddictApplicationDescriptor
+            {
+                ApplicationType = OpenIddictConstants.ApplicationTypes.Native,
+                ClientType = OpenIddictConstants.ClientTypes.Public,
+                ConsentType = OpenIddictConstants.ConsentTypes.Implicit,
+                ClientId = _openIddictPostmanClientOptions.ClientId,
+                DisplayName = "MultiShop Postman Client",
+
+                RedirectUris =
+                {
+                    new Uri(_openIddictPostmanClientOptions.RedirectUri, UriKind.Absolute)
+                },
+
+                Permissions =
+                {
+                    OpenIddictConstants.Permissions.Endpoints.Authorization,
+                    OpenIddictConstants.Permissions.Endpoints.Token,
+                    OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.Permissions.ResponseTypes.Code,
+                    OpenIddictConstants.Permissions.Scopes.Email,
+                    OpenIddictConstants.Permissions.Scopes.Profile,
+                    OpenIddictConstants.Permissions.Scopes.Roles,
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "order_api"
+                },
+
+                Requirements =
+                {
+                    OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange
+                }
+            };
+
+            if (application == null)
+            {
+                await applicationManager.CreateAsync(descriptor, cancellationToken);
+                return;
+            }
+
+            await applicationManager.UpdateAsync(application, descriptor, cancellationToken);
         }
 
         private async Task CreateWebClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken)

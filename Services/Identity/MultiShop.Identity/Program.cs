@@ -116,6 +116,23 @@ builder.Services
         "OpenIddict Visitor ClientSecret bulunamadı.")
     .ValidateOnStart();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services
+        .AddOptions<OpenIddictPostmanClientOptions>()
+        .BindConfiguration(OpenIddictPostmanClientOptions.SectionName)
+        .Validate(
+            options => !string.IsNullOrWhiteSpace(options.ClientId),
+            "OpenIddict Postman ClientId bulunamadı.")
+        .Validate(
+            options => Uri.TryCreate(
+                options.RedirectUri,
+                UriKind.Absolute,
+                out _),
+            "OpenIddict Postman RedirectUri geçerli değil.")
+        .ValidateOnStart();
+}
+
 builder.Services.AddScoped<IOpenIddictPrincipalService, OpenIddictPrincipalService>();
 
 
