@@ -1,13 +1,60 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MultiShop.Catalog.Authorization;
 using MultiShop.Catalog.Mapping;
 using MultiShop.Catalog.Services.CategoryServices;
 using MultiShop.Catalog.Services.ProductServices;
 using MultiShop.Catalog.Settings;
+using OpenIddict.Abstractions;
+using OpenIddict.Validation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var identityProviderOptions = builder.Configuration
+    .GetRequiredSection(IdentityProviderOptions.SectionName)
+    .Get<IdentityProviderOptions>()
+    ?? throw new InvalidOperationException(
+        "IdentityProvider yapılandırması bulunamadı.");
+
+if (!Uri.TryCreate(
+        identityProviderOptions.Issuer,
+        UriKind.Absolute,
+        out var identityProviderIssuer)
+    || identityProviderIssuer.Scheme != Uri.UriSchemeHttps)
+{
+    throw new InvalidOperationException(
+        "IdentityProvider:Issuer geçerli bir HTTPS adresi olmalıdır.");
+}
+
 builder.Services.AddControllers();
+
+builder.Services.AddOpenIddict()
+    .AddValidation(options =>
+    {
+        options.SetIssuer(identityProviderIssuer);
+        options.AddAudiences(CatalogAuthorizationConstants.Audience);
+        options.UseSystemNetHttp();
+        options.UseAspNetCore();
+    });
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        CatalogAuthorizationConstants.Policy,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireAssertion(context =>
+                context.User.HasScope(
+                    CatalogAuthorizationConstants.Scope));
+        });
+});
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -57,7 +104,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
-//Devlopment s�ras�nda uygunsuz mapping kontrol�
+//Devlopment sırasında uygunsuz mapping kontrolü
 if (app.Environment.IsDevelopment())
 {
     app.Services
@@ -70,6 +117,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

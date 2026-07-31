@@ -10,6 +10,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" />
     <PackageReference Include="MongoDB.Driver" />
+    <PackageReference Include="OpenIddict.Validation.AspNetCore" />
+    <PackageReference Include="OpenIddict.Validation.SystemNetHttp" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 </Project>

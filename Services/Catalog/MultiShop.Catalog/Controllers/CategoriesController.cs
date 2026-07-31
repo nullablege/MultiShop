@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MultiShop.Catalog.Authorization;
 using MultiShop.Catalog.DTOs.CategoryDTOs;
 using MultiShop.Catalog.Services.CategoryServices;
 
@@ -7,6 +9,7 @@ namespace MultiShop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = CatalogAuthorizationConstants.Policy)]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
