@@ -21,10 +21,24 @@ namespace MultiShop.Identity.Data
         private async Task CreateVisitorClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken = default)
         {
             var application = await applicationManager.FindByClientIdAsync(_openIddictVisitorClientOptions.ClientId, cancellationToken);
+            var discountScopePermission = OpenIddictConstants.Permissions.Prefixes.Scope + "discount_api";
 
             if (application != null)
             {
-                return;
+                var hasDiscountPermission = await applicationManager.HasPermissionAsync(application, discountScopePermission, cancellationToken);
+                if (hasDiscountPermission)
+                {
+                    return;
+                }
+                else
+                {
+                    var applicationDescriptor = new OpenIddictApplicationDescriptor();
+                    await applicationManager.PopulateAsync(applicationDescriptor, application, cancellationToken);
+
+                    applicationDescriptor.Permissions.Add(discountScopePermission);
+                    await applicationManager.UpdateAsync(application, applicationDescriptor, cancellationToken);
+                    return;
+                }
             }
 
             var descriptor = new OpenIddictApplicationDescriptor
@@ -38,7 +52,8 @@ namespace MultiShop.Identity.Data
                 {
                     OpenIddictConstants.Permissions.Endpoints.Token,
                     OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "catalog_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "catalog_api",
+                    discountScopePermission
                 }
             };
 

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MultiShop.Discount.Authorization;
 using MultiShop.Discount.Dtos;
 using MultiShop.Discount.Services;
 
@@ -6,6 +8,7 @@ namespace MultiShop.Discount.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = DiscountAuthorizationConstants.Policy)]
     public class DiscountsController : ControllerBase
     {
         private readonly IDiscountService _discountService;
@@ -47,6 +50,7 @@ namespace MultiShop.Discount.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = DiscountAuthorizationConstants.ManagementRoles)]
         public async Task<ActionResult> Create(CreateDiscountCouponDto createDiscountCouponDto, CancellationToken cancellationToken = default)
         {
             await _discountService.CreateDiscountCouponAsync(createDiscountCouponDto, cancellationToken);
@@ -54,6 +58,7 @@ namespace MultiShop.Discount.Controllers
         }
 
         [HttpPut("{couponId:int}")]
+        [Authorize(Roles = DiscountAuthorizationConstants.ManagementRoles)]
         public async Task<ActionResult> Update(int couponId, UpdateDiscountCouponDto updateDiscountCouponDto, CancellationToken cancellationToken = default)
         {
             if (couponId != updateDiscountCouponDto.CouponId)
@@ -71,6 +76,7 @@ namespace MultiShop.Discount.Controllers
         }
 
         [HttpDelete("{couponId:int}")]
+        [Authorize(Roles = DiscountAuthorizationConstants.ManagementRoles)]
         public async Task<ActionResult> Delete(int couponId, CancellationToken cancellationToken = default)
         {
             var result = await _discountService.DeleteDiscountCouponAsync(couponId, cancellationToken);
