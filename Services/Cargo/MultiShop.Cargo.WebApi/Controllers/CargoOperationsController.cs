@@ -1,12 +1,16 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.Cargo.BusinessLayer.Abstract;
 using MultiShop.Cargo.DtoLayer.CargoOperationDTOs;
 using MultiShop.Cargo.EntityLayer.Concrete;
+using MultiShop.Cargo.WebApi.Authorization;
 
 namespace MultiShop.Cargo.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = CargoAuthorizationConstants.ManagementPolicy)]
+
     public class CargoOperationsController : ControllerBase
     {
         private readonly ICargoOperationService _cargoOperationService;

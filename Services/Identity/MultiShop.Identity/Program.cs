@@ -72,7 +72,8 @@ builder.Services.AddOpenIddict()
                 IdentityAuthorizationConstants.IdentityApiScope,
                 "catalog_api",
                 "discount_api",
-                "order_api");
+                "order_api",
+                "cargo_api");
 
 
     })
