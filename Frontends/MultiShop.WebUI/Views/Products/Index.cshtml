@@ -1,0 +1,94 @@
+@{
+    ViewData["Title"] = "Ürünler";
+    var products = new[]
+    {
+        new { Name = "Yeni Sezon Çanta", Price = "₺1.250", OldPrice = "₺1.490", Image = "product-1.jpg" },
+        new { Name = "Günlük Ayakkabı", Price = "₺1.490", OldPrice = "₺1.750", Image = "product-2.jpg" },
+        new { Name = "Klasik Saat", Price = "₺2.100", OldPrice = "₺2.390", Image = "product-3.jpg" },
+        new { Name = "Rahat Spor Giyim", Price = "₺950", OldPrice = "₺1.100", Image = "product-4.jpg" },
+        new { Name = "Günlük Aksesuar", Price = "₺720", OldPrice = "₺890", Image = "product-5.jpg" },
+        new { Name = "Yeni Sezon Ürün", Price = "₺1.380", OldPrice = "₺1.590", Image = "product-6.jpg" }
+    };
+}
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                <span class="breadcrumb-item active">Ürünler</span>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <aside class="col-lg-3 col-md-4">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Fiyata Göre Filtrele</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" checked id="price-all" />
+                    <label class="custom-control-label" for="price-all">Tüm Fiyatlar</label><span class="badge border font-weight-normal">0</span>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" id="price-1" />
+                    <label class="custom-control-label" for="price-1">₺0 - ₺1.000</label><span class="badge border font-weight-normal">0</span>
+                </div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                    <input type="checkbox" class="custom-control-input" id="price-2" />
+                    <label class="custom-control-label" for="price-2">₺1.000 ve üzeri</label><span class="badge border font-weight-normal">0</span>
+                </div>
+            </div>
+
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Renk</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"><input type="checkbox" class="custom-control-input" id="color-black" /><label class="custom-control-label" for="color-black">Siyah</label><span class="badge border font-weight-normal">0</span></div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"><input type="checkbox" class="custom-control-input" id="color-white" /><label class="custom-control-label" for="color-white">Beyaz</label><span class="badge border font-weight-normal">0</span></div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between"><input type="checkbox" class="custom-control-input" id="color-blue" /><label class="custom-control-label" for="color-blue">Mavi</label><span class="badge border font-weight-normal">0</span></div>
+            </div>
+
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Beden</span></h5>
+            <div class="bg-light p-4 mb-30">
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"><input type="checkbox" class="custom-control-input" id="size-s" /><label class="custom-control-label" for="size-s">S</label><span class="badge border font-weight-normal">0</span></div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3"><input type="checkbox" class="custom-control-input" id="size-m" /><label class="custom-control-label" for="size-m">M</label><span class="badge border font-weight-normal">0</span></div>
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between"><input type="checkbox" class="custom-control-input" id="size-l" /><label class="custom-control-label" for="size-l">L</label><span class="badge border font-weight-normal">0</span></div>
+            </div>
+        </aside>
+
+        <section class="col-lg-9 col-md-8">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="h5 m-0">Ürünler</h2>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sıralama</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#">En Yeni</a>
+                        <a class="dropdown-item" href="#">Popülerlik</a>
+                        <a class="dropdown-item" href="#">Fiyat</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-3">
+                @foreach (var product in products)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" src="~/theme/img/@product.Image" alt="@product.Name" />
+                                <div class="product-action">
+                                    <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-search"></i></a>
+                                </div>
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate" href="#">@product.Name</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2"><h5>@product.Price</h5><h6 class="text-muted ml-2"><del>@product.OldPrice</del></h6></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>
