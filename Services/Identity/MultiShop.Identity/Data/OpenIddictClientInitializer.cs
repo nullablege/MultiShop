@@ -128,34 +128,6 @@ namespace MultiShop.Identity.Data
         private async Task CreateWebClientAsync(IOpenIddictApplicationManager applicationManager, CancellationToken cancellationToken)
         {
             var application = await applicationManager.FindByClientIdAsync(_openIddictClientOptions.ClientId, cancellationToken);
-            var cargoScopePermission = OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api";
-            var basketScopePermission = OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api";
-
-            if (application != null)
-            {
-                var hasCargoPermission = await applicationManager.HasPermissionAsync(application, cargoScopePermission, cancellationToken);
-                var hasBasketPermission = await applicationManager.HasPermissionAsync(application, basketScopePermission, cancellationToken);
-                if (hasCargoPermission && hasBasketPermission)
-                {
-                    return;
-                }
-
-                var applicationDescriptor = new OpenIddictApplicationDescriptor();
-                await applicationManager.PopulateAsync(applicationDescriptor, application, cancellationToken);
-
-                if (!hasCargoPermission)
-                {
-                    applicationDescriptor.Permissions.Add(cargoScopePermission);
-                }
-
-                if (!hasBasketPermission)
-                {
-                    applicationDescriptor.Permissions.Add(basketScopePermission);
-                }
-
-                await applicationManager.UpdateAsync(application, applicationDescriptor, cancellationToken);
-                return;
-            }
 
             var descriptor = new OpenIddictApplicationDescriptor
             {
@@ -203,7 +175,13 @@ namespace MultiShop.Identity.Data
 
             };
 
-            await applicationManager.CreateAsync(descriptor, cancellationToken);
+            if (application == null)
+            {
+                await applicationManager.CreateAsync(descriptor, cancellationToken);
+                return;
+            }
+
+            await applicationManager.UpdateAsync(application, descriptor, cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
