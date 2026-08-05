@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - MultiShop Admin</title>
+    <link rel="stylesheet" href="~/admin-theme/html/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/admin-theme/html/dist/css/style.css" />
+    <link rel="stylesheet" href="~/admin-theme/html/dist/et-line-font/et-line-font.css" />
+    <link rel="stylesheet" href="~/admin-theme/html/dist/font-awesome/css/font-awesome.min.css" />
+</head>
+<body class="sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header dark-bg">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="logo dark-bg"><span class="logo-mini">MS</span><span class="logo-lg">MultiShop Admin</span></a>
+            <nav class="navbar navbar-static-top"><span class="navbar-text text-white">Yönetim Paneli</span></nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="header">YÖNETİM</li>
+                    <li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="icon-speedometer"></i> <span>Dashboard</span></a></li>
+                    <li><a asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="icon-grid"></i> <span>Kategoriler</span></a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="icon-basket"></i> <span>Mağazaya Dön</span></a></li>
+                </ul>
+            </section>
+        </aside>
+        <main class="content-wrapper">
+            <section class="content-header"><h1>@ViewData["Title"]</h1></section>
+            <section class="content">@RenderBody()</section>
+        </main>
+        <footer class="main-footer dark-bg">© @DateTime.UtcNow.Year MultiShop</footer>
+    </div>
+    <script src="~/admin-theme/html/dist/js/jquery.min.js"></script>
+    <script src="~/admin-theme/html/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/admin-theme/html/dist/js/ovio.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
