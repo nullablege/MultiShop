@@ -2,22 +2,9 @@
 <html lang="tr">
 <partial name="_HeadPartial" />
 <body>
-    <div class="container-fluid">
-        <div class="row bg-secondary py-1 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center h-100">
-                    <a class="text-body mr-3" href="#">Hakkımızda</a>
-                    <a class="text-body mr-3" href="#">İletişim</a>
-                    <a class="text-body mr-3" href="#">Yardım</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="btn btn-sm btn-light" href="#">Hesabım</a>
-                </div>
-            </div>
-        </div>
+    @await Component.InvokeAsync("Topbar")
 
+    <div class="container-fluid">
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
                 <a asp-controller="Home" asp-action="Index" class="text-decoration-none">
