@@ -106,7 +106,8 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Scopes.Profile,
                     OpenIddictConstants.Permissions.Scopes.Roles,
                     OpenIddictConstants.Permissions.Prefixes.Scope + "order_api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api"
                 },
 
                 Requirements =
@@ -128,12 +129,13 @@ namespace MultiShop.Identity.Data
         {
             var application = await applicationManager.FindByClientIdAsync(_openIddictClientOptions.ClientId, cancellationToken);
             var cargoScopePermission = OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api";
+            var basketScopePermission = OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api";
 
             if (application != null)
             {
                 var hasCargoPermission = await applicationManager.HasPermissionAsync(application, cargoScopePermission, cancellationToken);
-
-                if (hasCargoPermission)
+                var hasBasketPermission = await applicationManager.HasPermissionAsync(application, basketScopePermission, cancellationToken);
+                if (hasCargoPermission && hasBasketPermission)
                 {
                     return;
                 }
@@ -141,7 +143,15 @@ namespace MultiShop.Identity.Data
                 var applicationDescriptor = new OpenIddictApplicationDescriptor();
                 await applicationManager.PopulateAsync(applicationDescriptor, application, cancellationToken);
 
-                applicationDescriptor.Permissions.Add(cargoScopePermission);
+                if (!hasCargoPermission)
+                {
+                    applicationDescriptor.Permissions.Add(cargoScopePermission);
+                }
+
+                if (!hasBasketPermission)
+                {
+                    applicationDescriptor.Permissions.Add(basketScopePermission);
+                }
 
                 await applicationManager.UpdateAsync(application, applicationDescriptor, cancellationToken);
                 return;
@@ -182,7 +192,8 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Prefixes.Scope + "catalog_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "discount_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "order_api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api"
                 },
 
                 Requirements =
