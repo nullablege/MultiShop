@@ -12,8 +12,20 @@
 <body class="sidebar-mini">
     <div class="wrapper">
         <header class="main-header dark-bg">
-            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="logo dark-bg"><span class="logo-mini">MS</span><span class="logo-lg">MultiShop Admin</span></a>
-            <nav class="navbar navbar-static-top"><span class="navbar-text text-white">Yönetim Paneli</span></nav>
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="logo dark-bg">
+                <span class="logo-mini"><b>MS</b></span>
+                <span class="logo-lg"><b>Multi</b>Shop</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" aria-label="Menüyü aç veya kapat">
+                    <span class="sr-only">Menüyü aç veya kapat</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Mağazaya Dön</a></li>
+                    </ul>
+                </div>
+            </nav>
         </header>
         <aside class="main-sidebar">
             <section class="sidebar">
@@ -21,6 +33,8 @@
                     <li class="header">YÖNETİM</li>
                     <li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="icon-speedometer"></i> <span>Dashboard</span></a></li>
                     <li><a asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="icon-grid"></i> <span>Kategoriler</span></a></li>
+                    <li><a asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="icon-basket"></i> <span>Ürünler</span></a></li>
+                    <li><a asp-area="Admin" asp-controller="Product" asp-action="ProductListWithCategory"><i class="icon-list"></i> <span>Ürün & Kategori</span></a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index"><i class="icon-basket"></i> <span>Mağazaya Dön</span></a></li>
                 </ul>
             </section>

@@ -9,4 +9,15 @@ public class CategoryController : Controller
     {
         return View();
     }
+
+    public IActionResult CreateCategory()
+    {
+        return View();
+    }
+
+    public IActionResult UpdateCategory(string? id)
+    {
+        ViewData["CategoryId"] = id;
+        return View();
+    }
 }

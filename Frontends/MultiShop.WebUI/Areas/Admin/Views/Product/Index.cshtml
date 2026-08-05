@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Ürünler";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Ürün Listesi</h3>
+        <div class="box-tools pull-right">
+            <a asp-action="CreateProduct" class="btn btn-primary btn-sm">
+                <i class="fa fa-plus"></i> Yeni Ürün
+            </a>
+        </div>
+    </div>
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ürün Adı</th>
+                    <th>Fiyat</th>
+                    <th>Kategori</th>
+                    <th class="text-right">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        Ürünler, Catalog API bağlantısı tamamlandığında burada listelenecek.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer">
+        <a asp-action="ProductListWithCategory" class="btn btn-default">
+            <i class="fa fa-list"></i> Kategori Bazlı Listeyi Gör
+        </a>
+    </div>
+</div>
