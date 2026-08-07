@@ -46,6 +46,13 @@
                                    class="btn btn-success btn-sm">
                                     Güncelle
                                 </a>
+                                <form asp-action="DeleteCategory" method="post" style="display: inline;">
+                                    <input type="hidden" name="categoryId" value="@category.CategoryId" />
+
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu kategoriyi silmek istediğine emin misin?');">
+                                        Sil
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     }

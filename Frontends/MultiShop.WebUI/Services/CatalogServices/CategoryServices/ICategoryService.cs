@@ -6,5 +6,6 @@ namespace MultiShop.WebUI.Services.CatalogServices.CategoryServices
     {
         Task<IReadOnlyList<ResultCategoryDto>> GetAllAsync(CancellationToken cancellationToken = default);
         Task CreateAsync(CreateCategoryDto createCategoryDto, CancellationToken cancellationToken = default);
+        Task DeleteAsync(string categoryId, CancellationToken cancellationToken = default);
     }
 }

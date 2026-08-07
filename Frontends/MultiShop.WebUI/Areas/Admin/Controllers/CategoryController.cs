@@ -42,4 +42,16 @@ public class CategoryController : Controller
         ViewData["CategoryId"] = id;
         return View();
     }
+
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteCategory(string categoryId, CancellationToken cancellationToken)
+    {
+        await _categoryService.DeleteAsync(categoryId, cancellationToken);
+
+        return RedirectToAction("Index");
+    }
+
 }
