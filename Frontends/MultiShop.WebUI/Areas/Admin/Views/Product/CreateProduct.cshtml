@@ -1,42 +1,47 @@
+@model CreateProductDto
+
 @{
     ViewData["Title"] = "Yeni Ürün";
 }
 
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">Yeni ürün bilgileri</h3>
+<form asp-action="CreateProduct" method="post">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Yeni ürün bilgileri</h3>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <label asp-for="ProductName">Ürün adı</label>
+                <input asp-for="ProductName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductPrice">Fiyat</label>
+                <input asp-for="ProductPrice" type="number" class="form-control" min="0" step="0.01" />
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverImageUrl">Kapak görseli adresi</label>
+                <input asp-for="CoverImageUrl" type="url" class="form-control" placeholder="https://..." />
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId">Kategori</label>
+                <select asp-for="CategoryId" class="form-control">
+                    <option value="">Kategori seçin</option>
+                    @foreach (var category in (ViewBag.Categories as IReadOnlyList<ResultCategoryDto> ?? Array.Empty<ResultCategoryDto>()))
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductDetail.Description">Açıklama</label>
+                <textarea asp-for="ProductDetail.Description" class="form-control" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="box-footer">
+            <a asp-action="Index" class="btn btn-default">Listeye Dön</a>
+            <button type="submit" class="btn btn-primary pull-right">
+                <i class="fa fa-save"></i> Ürünü Kaydet
+            </button>
+        </div>
     </div>
-    <div class="box-body">
-        <div class="form-group">
-            <label for="productName">Ürün adı</label>
-            <input id="productName" type="text" class="form-control" placeholder="Ürün adını yazın" />
-        </div>
-        <div class="form-group">
-            <label for="productPrice">Fiyat</label>
-            <input id="productPrice" type="number" class="form-control" min="0" step="0.01" placeholder="0,00" />
-        </div>
-        <div class="form-group">
-            <label for="productImageUrl">Görsel adresi</label>
-            <input id="productImageUrl" type="url" class="form-control" placeholder="https://..." />
-        </div>
-        <div class="form-group">
-            <label for="categoryId">Kategori</label>
-            <select id="categoryId" class="form-control" disabled>
-                <option>Kategoriler Catalog API bağlantısıyla yüklenecek</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="productDescription">Açıklama</label>
-            <textarea id="productDescription" class="form-control" rows="5" placeholder="Ürün açıklamasını yazın"></textarea>
-        </div>
-        <div class="callout callout-info">
-            <p>Kategori listesinin yüklenmesi ve kaydetme isteği, Catalog API sözleşmesi eklendiğinde etkinleşecek.</p>
-        </div>
-    </div>
-    <div class="box-footer">
-        <a asp-action="Index" class="btn btn-default">Listeye Dön</a>
-        <button type="button" class="btn btn-primary pull-right" disabled>
-            <i class="fa fa-save"></i> Ürünü Kaydet
-        </button>
-    </div>
-</div>
+</form>

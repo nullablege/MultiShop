@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using MultiShop.WebUI.Configuration;
 using MultiShop.WebUI.Handlers;
 using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
+using MultiShop.WebUI.Services.CatalogServices.ProductServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,17 @@ builder.Services.AddTransient<UserAccessTokenHandler>();
 
 builder.Services
     .AddHttpClient<ICategoryService, CategoryService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<CatalogApiOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<IProductService, ProductService>((serviceProvider, client) =>
     {
         var options = serviceProvider
             .GetRequiredService<IOptions<CatalogApiOptions>>()
