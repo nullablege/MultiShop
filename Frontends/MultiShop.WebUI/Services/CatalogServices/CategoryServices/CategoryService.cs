@@ -23,6 +23,11 @@ namespace MultiShop.WebUI.Services.CatalogServices.CategoryServices
             result.EnsureSuccessStatusCode();
         }
 
+        public async Task<UpdateCategoryDto?> GetByIdAsync(string categoryId, CancellationToken cancellationToken = default)
+        {
+            return await _httpClient.GetFromJsonAsync<UpdateCategoryDto>("api/categories/" + categoryId, cancellationToken);
+        }
+
         public async Task<IReadOnlyList<ResultCategoryDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var result = await _httpClient.GetFromJsonAsync<List<ResultCategoryDto>>("api/categories", cancellationToken);
@@ -30,6 +35,12 @@ namespace MultiShop.WebUI.Services.CatalogServices.CategoryServices
                 return Array.Empty<ResultCategoryDto>();
 
             return result;
+        }
+
+        public async Task UpdateAsync(UpdateCategoryDto updateCategoryDto, CancellationToken cancellationToken = default)
+        {
+            var result = await _httpClient.PutAsJsonAsync("api/categories/" + updateCategoryDto.CategoryId, updateCategoryDto, cancellationToken);
+            result.EnsureSuccessStatusCode();
         }
     }
 }

@@ -37,12 +37,22 @@ public class CategoryController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult UpdateCategory(string? id)
+    public async Task<IActionResult> UpdateCategory(string id, CancellationToken cancellationToken)
     {
-        ViewData["CategoryId"] = id;
-        return View();
+        var model = await _categoryService.GetByIdAsync(id, cancellationToken);
+        return View(model);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return View(updateCategoryDto);
+
+        await _categoryService.UpdateAsync(updateCategoryDto, cancellationToken);
+        return RedirectToAction("Index");
+    }
 
 
     [HttpPost]
