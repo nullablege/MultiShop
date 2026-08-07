@@ -11,6 +11,12 @@ namespace MultiShop.WebUI.Services.CatalogServices.CategoryServices
             _httpClient = httpClient;
         }
 
+        public async Task CreateAsync(CreateCategoryDto createCategoryDto, CancellationToken cancellationToken = default)
+        {
+            var result = await _httpClient.PostAsJsonAsync("api/categories", createCategoryDto, cancellationToken);
+            result.EnsureSuccessStatusCode();
+        }
+
         public async Task<IReadOnlyList<ResultCategoryDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var result = await _httpClient.GetFromJsonAsync<List<ResultCategoryDto>>("api/categories", cancellationToken);

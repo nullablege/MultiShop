@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MultiShop.WebUI.Models.Catalog.CategoryDTOs;
 using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
 
 namespace MultiShop.WebUI.Areas.Admin.Controllers;
@@ -23,6 +24,17 @@ public class CategoryController : Controller
     public IActionResult CreateCategory()
     {
         return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto, CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+            return View(createCategoryDto);
+
+        await _categoryService.CreateAsync(createCategoryDto, cancellationToken);
+        return RedirectToAction("Index");
     }
 
     public IActionResult UpdateCategory(string? id)

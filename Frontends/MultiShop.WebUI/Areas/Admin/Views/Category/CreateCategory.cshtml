@@ -1,24 +1,24 @@
+@model CreateCategoryDto
 @{
     ViewData["Title"] = "Yeni Kategori";
 }
 
-<div class="box box-primary">
-    <div class="box-header with-border">
-        <h3 class="box-title">Yeni kategori bilgileri</h3>
-    </div>
-    <div class="box-body">
-        <div class="form-group">
-            <label for="categoryName">Kategori adı</label>
-            <input id="categoryName" type="text" class="form-control" placeholder="Örn. Elektronik" />
+<form asp-action="CreateCategory" method="post">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Yeni kategori bilgileri</h3>
         </div>
-        <div class="callout callout-info">
-            <p>Kaydetme işlemi, Catalog API form sözleşmesi eklendiğinde etkinleşecek.</p>
+        <div class="box-body">
+            <div class="form-group">
+                <label asp-for="CategoryName">Kategori adı</label>
+                <input id="categoryName" asp-for="CategoryName" type="text" class="form-control" placeholder="Örn. Elektronik" />
+            </div>
+        </div>
+        <div class="box-footer">
+            <a asp-action="Index" class="btn btn-default">Listeye Dön</a>
+            <button type="submit" class="btn btn-primary pull-right">
+                <i class="fa fa-save"></i> Kategoriyi Kaydet
+            </button>
         </div>
     </div>
-    <div class="box-footer">
-        <a asp-action="Index" class="btn btn-default">Listeye Dön</a>
-        <button type="button" class="btn btn-primary pull-right" disabled>
-            <i class="fa fa-save"></i> Kategoriyi Kaydet
-        </button>
-    </div>
-</div>
+</form>
