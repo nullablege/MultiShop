@@ -1,5 +1,8 @@
+@model IReadOnlyList<ResultProductWithCategoryDto>
+
 @{
     ViewData["Title"] = "Ürünler ve Kategoriler";
+    var rowNumber = 0;
 }
 
 <div class="box box-primary">
@@ -17,11 +20,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="4" class="text-center text-muted">
-                        Ürün-kategori sorgusu Catalog API'de hazırlandığında burada gösterilecek.
-                    </td>
-                </tr>
+                @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            Kayıtlı ürün bulunamadı.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var product in Model)
+                    {
+                        rowNumber++;
+                        <tr>
+                            <td>@rowNumber</td>
+                            <td>@product.ProductName</td>
+                            <td>@(product.CategoryName ?? "Kategori bulunamadı")</td>
+                            <td>@product.ProductPrice.ToString("N2") ₺</td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>

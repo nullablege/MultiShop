@@ -32,6 +32,15 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
             return result;
         }
 
+        public async Task<IReadOnlyList<ResultProductWithCategoryDto>> GetWithCategoryAsync(CancellationToken cancellationToken = default)
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<ResultProductWithCategoryDto>>("api/products/with-category", cancellationToken);
+            if (result == null)
+                return Array.Empty<ResultProductWithCategoryDto>();
+
+            return result;
+        }
+
         public async Task<UpdateProductDto?> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
         {
             return await _httpClient.GetFromJsonAsync<UpdateProductDto>("api/products/" + productId, cancellationToken);

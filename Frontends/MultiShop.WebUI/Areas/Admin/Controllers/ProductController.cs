@@ -74,9 +74,10 @@ public class ProductController : Controller
         return RedirectToAction("Index");
     }
 
-    public IActionResult ProductListWithCategory()
+    public async Task<IActionResult> ProductListWithCategory(CancellationToken cancellationToken)
     {
-        return View();
+        var model = await _productService.GetWithCategoryAsync(cancellationToken);
+        return View(model);
     }
 
     private async Task LoadCategoriesAsync(CancellationToken cancellationToken)

@@ -24,6 +24,13 @@ public class ProductsController : ControllerBase
         return Ok(values);
     }
 
+    [HttpGet("with-category")]
+    public async Task<ActionResult<IReadOnlyList<ResultProductWithCategoryDto>>> GetWithCategory(CancellationToken cancellationToken = default)
+    {
+        var values = await _productService.GetWithCategoryAsync(cancellationToken);
+        return Ok(values);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<GetByIdProductDto>> GetById(string id, CancellationToken cancellationToken = default)
     {

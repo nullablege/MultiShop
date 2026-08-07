@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MultiShop.Catalog.DTOs.ProductDTOs;
 using MultiShop.Catalog.Entities;
@@ -10,12 +11,15 @@ namespace MultiShop.Catalog.Services.ProductServices
     public class ProductService : IProductService
     {
         private readonly IMongoCollection<Product> _mongoCollection;
+        private readonly IMongoCollection<Category> _categoryCollection;
         private readonly IMapper _mapper;
 
         public ProductService(IMongoDatabase database, IMapper mapper, IOptions<MongoDbSettings> mongoDbSettings)
         {
             _mapper = mapper;
             _mongoCollection = database.GetCollection<Product>(mongoDbSettings.Value.ProductCollectionName);
+            _categoryCollection = database.GetCollection<Category>(
+                mongoDbSettings.Value.CategoryCollectionName);
         }
 
         public async Task CreateAsync(CreateProductDto createProductDto, CancellationToken cancellationToken = default)
@@ -42,6 +46,43 @@ namespace MultiShop.Catalog.Services.ProductServices
             var value = await _mongoCollection.Find(product => product.ProductId == id, options:null).FirstOrDefaultAsync(cancellationToken);
             var result = _mapper.Map<GetByIdProductDto?>(value);
             return result;
+        }
+
+        public async Task<IReadOnlyList<ResultProductWithCategoryDto>> GetWithCategoryAsync(CancellationToken cancellationToken = default)
+        {
+            var stages = new[]
+            {
+                new BsonDocument("$lookup", new BsonDocument
+                {
+                    { "from", _categoryCollection.CollectionNamespace.CollectionName },
+                    { "localField", "CategoryId" },
+                    { "foreignField", "_id" },
+                    { "as", "category" }
+                }),
+                new BsonDocument("$unwind", new BsonDocument
+                {
+                    { "path", "$category" },
+                    { "preserveNullAndEmptyArrays", true }
+                }),
+                new BsonDocument("$project", new BsonDocument
+                {
+                    { "_id", 0 },
+                    { "ProductId", new BsonDocument("$toString", "$_id") },
+                    { "ProductName", 1 },
+                    { "ProductPrice", 1 },
+                    { "CoverImageUrl", 1 },
+                    { "CategoryId", new BsonDocument("$toString", "$CategoryId") },
+                    { "CategoryName", "$category.CategoryName" }
+                })
+            };
+
+            var pipeline = PipelineDefinition<Product, ResultProductWithCategoryDto>.Create(stages);
+
+            var values = await _mongoCollection
+                .Aggregate(pipeline, cancellationToken: cancellationToken)
+                .ToListAsync(cancellationToken);
+
+            return values;
         }
 
         public async Task<bool> UpdateAsync(UpdateProductDto updateProductDto, CancellationToken cancellationToken = default)
