@@ -4,7 +4,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
 {
     public sealed class ProductService : IProductService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient; 
 
         public ProductService(HttpClient httpClient)
         {
@@ -50,6 +50,16 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
         {
             var result = await _httpClient.PutAsJsonAsync("api/products/" + updateProductDto.ProductId, updateProductDto, cancellationToken);
             result.EnsureSuccessStatusCode();
+        }
+
+        public async Task<IReadOnlyList<ResultProductDto>> GetByCategoryIdAsync(string categoryId, CancellationToken cancellationToken = default)
+        {
+            var result =  await _httpClient.GetFromJsonAsync<List<ResultProductDto>>("api/products/by-category/" + categoryId, cancellationToken);
+            if(result == null)
+                return Array.Empty<ResultProductDto>();
+
+            return result;
+            
         }
     }
 }

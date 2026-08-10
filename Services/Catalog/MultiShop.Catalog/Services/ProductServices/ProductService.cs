@@ -10,14 +10,14 @@ namespace MultiShop.Catalog.Services.ProductServices
 {
     public class ProductService : IProductService
     {
-        private readonly IMongoCollection<Product> _mongoCollection;
+        private readonly IMongoCollection<Product> _productCollection;
         private readonly IMongoCollection<Category> _categoryCollection;
         private readonly IMapper _mapper;
 
         public ProductService(IMongoDatabase database, IMapper mapper, IOptions<MongoDbSettings> mongoDbSettings)
         {
             _mapper = mapper;
-            _mongoCollection = database.GetCollection<Product>(mongoDbSettings.Value.ProductCollectionName);
+            _productCollection = database.GetCollection<Product>(mongoDbSettings.Value.ProductCollectionName);
             _categoryCollection = database.GetCollection<Category>(
                 mongoDbSettings.Value.CategoryCollectionName);
         }
@@ -25,26 +25,33 @@ namespace MultiShop.Catalog.Services.ProductServices
         public async Task CreateAsync(CreateProductDto createProductDto, CancellationToken cancellationToken = default)
         {
             var value = _mapper.Map<Product>(createProductDto);
-            await _mongoCollection.InsertOneAsync(value, options:null, cancellationToken);
+            await _productCollection.InsertOneAsync(value, options:null, cancellationToken);
         }
 
         public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
         {
-            var result = await _mongoCollection.DeleteOneAsync(product => product.ProductId == id, options:null, cancellationToken);
+            var result = await _productCollection.DeleteOneAsync(product => product.ProductId == id, options:null, cancellationToken);
             return result.DeletedCount > 0;
         }
 
         public async Task<IReadOnlyList<ResultProductDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var values = await _mongoCollection.Find(product => true).ToListAsync(cancellationToken);
+            var values = await _productCollection.Find(product => true).ToListAsync(cancellationToken);
             var result = _mapper.Map<IReadOnlyList<ResultProductDto>>(values);
             return result;
         }
 
         public async Task<GetByIdProductDto?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
         {
-            var value = await _mongoCollection.Find(product => product.ProductId == id, options:null).FirstOrDefaultAsync(cancellationToken);
+            var value = await _productCollection.Find(product => product.ProductId == id, options:null).FirstOrDefaultAsync(cancellationToken);
             var result = _mapper.Map<GetByIdProductDto?>(value);
+            return result;
+        }
+
+        public async Task<IReadOnlyList<ResultProductDto>> GetProductsByCategoryAsync(string categoryId, CancellationToken cancellationToken = default)
+        {
+            var values = await _productCollection.Find(x => x.CategoryId == categoryId).ToListAsync(cancellationToken);
+            var result = _mapper.Map<List<ResultProductDto>>(values);
             return result;
         }
 
@@ -78,7 +85,7 @@ namespace MultiShop.Catalog.Services.ProductServices
 
             var pipeline = PipelineDefinition<Product, ResultProductWithCategoryDto>.Create(stages);
 
-            var values = await _mongoCollection
+            var values = await _productCollection
                 .Aggregate(pipeline, cancellationToken: cancellationToken)
                 .ToListAsync(cancellationToken);
 
@@ -88,7 +95,7 @@ namespace MultiShop.Catalog.Services.ProductServices
         public async Task<bool> UpdateAsync(UpdateProductDto updateProductDto, CancellationToken cancellationToken = default)
         {
             var value = _mapper.Map<Product>(updateProductDto);
-            var result = await _mongoCollection.ReplaceOneAsync(product => product.ProductId==value.ProductId , value, new ReplaceOptions(), cancellationToken);
+            var result = await _productCollection.ReplaceOneAsync(product => product.ProductId==value.ProductId , value, new ReplaceOptions(), cancellationToken);
             return result.MatchedCount > 0;
         }
     }

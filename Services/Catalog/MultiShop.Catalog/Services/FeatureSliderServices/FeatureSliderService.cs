@@ -9,37 +9,37 @@ namespace MultiShop.Catalog.Services.FeatureSliderServices
 {
     public class FeatureSliderService : IFeatureSliderService
     {
-        private readonly IMongoCollection<FeatureSlider> _featureCollection;
+        private readonly IMongoCollection<FeatureSlider> _featureSliderCollection;
         private readonly IMapper _mapper;
 
         public FeatureSliderService(IMongoDatabase database, IMapper mapper, IOptions<MongoDbSettings> mongoDbSettings)
         {
-            _featureCollection = database.GetCollection<FeatureSlider>(mongoDbSettings.Value.FeatureSliderCollectionName);
+            _featureSliderCollection = database.GetCollection<FeatureSlider>(mongoDbSettings.Value.FeatureSliderCollectionName);
             _mapper = mapper;
         }
 
         public async Task CreateAsync(CreateFeatureSliderDto createFeatureSliderDto, CancellationToken cancellationToken = default)
         {
             var value = _mapper.Map<FeatureSlider>(createFeatureSliderDto);
-            await _featureCollection.InsertOneAsync(value, options: null, cancellationToken);
+            await _featureSliderCollection.InsertOneAsync(value, options: null, cancellationToken);
         }
 
         public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
         {
-            var result = await _featureCollection.DeleteOneAsync(x => x.FeatureSliderId == id, options: null, cancellationToken);
+            var result = await _featureSliderCollection.DeleteOneAsync(x => x.FeatureSliderId == id, options: null, cancellationToken);
             return result.DeletedCount > 0;
         }
 
         public async Task<IReadOnlyList<ResultFeatureSliderDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var values = await _featureCollection.Find(x => true).ToListAsync(cancellationToken);
+            var values = await _featureSliderCollection.Find(x => true).ToListAsync(cancellationToken);
             var result = _mapper.Map<List<ResultFeatureSliderDto>>(values);
             return result;
         }
 
         public async Task<GetByIdFeatureSliderDto?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
         {
-            var value = await _featureCollection.Find(x => x.FeatureSliderId == id ).FirstOrDefaultAsync(cancellationToken);
+            var value = await _featureSliderCollection.Find(x => x.FeatureSliderId == id ).FirstOrDefaultAsync(cancellationToken);
             var result = _mapper.Map<GetByIdFeatureSliderDto?>(value);
             return result;
         }
@@ -47,7 +47,7 @@ namespace MultiShop.Catalog.Services.FeatureSliderServices
         public async Task<bool> UpdateAsync(UpdateFeatureSliderDto updateFeatureSliderDto, CancellationToken cancellationToken = default)
         {
             var value = _mapper.Map<FeatureSlider>(updateFeatureSliderDto);
-            var result = await _featureCollection.ReplaceOneAsync(x => x.FeatureSliderId == value.FeatureSliderId, value, new ReplaceOptions(), cancellationToken);
+            var result = await _featureSliderCollection.ReplaceOneAsync(x => x.FeatureSliderId == value.FeatureSliderId, value, new ReplaceOptions(), cancellationToken);
             return result.MatchedCount > 0;
 
 

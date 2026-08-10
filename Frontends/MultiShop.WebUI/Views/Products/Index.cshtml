@@ -1,14 +1,6 @@
+@model IReadOnlyList<ResultProductDto>
 @{
     ViewData["Title"] = "Ürünler";
-    var products = new[]
-    {
-        new { Name = "Yeni Sezon Çanta", Price = "₺1.250", OldPrice = "₺1.490", Image = "product-1.jpg" },
-        new { Name = "Günlük Ayakkabı", Price = "₺1.490", OldPrice = "₺1.750", Image = "product-2.jpg" },
-        new { Name = "Klasik Saat", Price = "₺2.100", OldPrice = "₺2.390", Image = "product-3.jpg" },
-        new { Name = "Rahat Spor Giyim", Price = "₺950", OldPrice = "₺1.100", Image = "product-4.jpg" },
-        new { Name = "Günlük Aksesuar", Price = "₺720", OldPrice = "₺890", Image = "product-5.jpg" },
-        new { Name = "Yeni Sezon Ürün", Price = "₺1.380", OldPrice = "₺1.590", Image = "product-6.jpg" }
-    };
 }
 
 <div class="container-fluid">
@@ -69,12 +61,12 @@
                 </div>
             </div>
             <div class="row pb-3">
-                @foreach (var product in products)
+                @foreach (var product in Model)
                 {
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="~/theme/img/@product.Image" alt="@product.Name" />
+                                <img class="img-fluid w-100" src="@product.CoverImageUrl" alt="@product.ProductName" />
                                 <div class="product-action">
                                     <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
@@ -82,8 +74,8 @@
                                 </div>
                             </div>
                             <div class="text-center py-4">
-                                <a asp-action="Details" class="h6 text-decoration-none text-truncate">@product.Name</a>
-                                <div class="d-flex align-items-center justify-content-center mt-2"><h5>@product.Price</h5><h6 class="text-muted ml-2"><del>@product.OldPrice</del></h6></div>
+                                <a asp-action="Details" class="h6 text-decoration-none text-truncate">@product.ProductName</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2"><h5>@product.ProductPrice.ToString("0.00") ₺</h5></div>
                             </div>
                         </div>
                     </div>

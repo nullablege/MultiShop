@@ -10,5 +10,6 @@ namespace MultiShop.Catalog.Services.ProductServices
         Task<bool> UpdateAsync(UpdateProductDto updateProductDto, CancellationToken cancellationToken = default);
         Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<ResultProductWithCategoryDto>> GetWithCategoryAsync(CancellationToken cancellationToken= default);
+        Task<IReadOnlyList<ResultProductDto>> GetProductsByCategoryAsync(string categoryId, CancellationToken cancellationToken = default);
     }
 }
