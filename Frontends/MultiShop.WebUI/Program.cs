@@ -5,7 +5,11 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using MultiShop.WebUI.Configuration;
 using MultiShop.WebUI.Handlers;
 using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
+using MultiShop.WebUI.Services.CatalogServices.FeatureSliderServices;
+using MultiShop.WebUI.Services.CatalogServices.FeatureServices;
 using MultiShop.WebUI.Services.CatalogServices.ProductServices;
+using MultiShop.WebUI.Services.CatalogServices.SpecialOfferServices;
+using MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +99,50 @@ builder.Services
 
 builder.Services
     .AddHttpClient<IProductService, ProductService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<CatalogApiOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<IFeatureSliderService, FeatureSliderService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<CatalogApiOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<ISpecialOfferService, SpecialOfferService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<CatalogApiOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<IFeatureService, FeatureService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<CatalogApiOptions>>()
+            .Value;
+
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<IOfferDiscountService, OfferDiscountService>((serviceProvider, client) =>
     {
         var options = serviceProvider
             .GetRequiredService<IOptions<CatalogApiOptions>>()

@@ -1,0 +1,16 @@
+@model CreateFeatureDto
+
+@{
+    ViewData["Title"] = "Yeni Öne Çıkan Alan";
+}
+
+<form asp-action="CreateFeature" method="post">
+    <div class="box box-primary">
+        <div class="box-header with-border"><h3 class="box-title">Yeni öne çıkan alan bilgileri</h3></div>
+        <div class="box-body">
+            <div class="form-group"><label asp-for="Title">Alan başlığı</label><input asp-for="Title" class="form-control" /></div>
+            <div class="form-group"><label asp-for="Icon">Font Awesome sınıfı</label><input asp-for="Icon" class="form-control" placeholder="fa fa-check" /></div>
+        </div>
+        <div class="box-footer"><a asp-action="Index" class="btn btn-default">Listeye Dön</a><button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Alanı Kaydet</button></div>
+    </div>
+</form>

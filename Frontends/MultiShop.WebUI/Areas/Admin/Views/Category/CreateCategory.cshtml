@@ -13,6 +13,10 @@
                 <label asp-for="CategoryName">Kategori adı</label>
                 <input id="categoryName" asp-for="CategoryName" type="text" class="form-control" placeholder="Örn. Elektronik" />
             </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl">Kategori görseli adresi</label>
+                <input asp-for="ImageUrl" type="url" class="form-control" placeholder="https://..." />
+            </div>
         </div>
         <div class="box-footer">
             <a asp-action="Index" class="btn btn-default">Listeye Dön</a>

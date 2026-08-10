@@ -1,0 +1,8 @@
+@model CreateOfferDiscountDto
+@{ ViewData["Title"] = "İndirim Teklifi Ekle"; Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; }
+<div class="box box-primary"><form asp-action="CreateOfferDiscount" method="post"><div class="box-body">
+    <div class="form-group"><label asp-for="Title">Başlık</label><input asp-for="Title" class="form-control" /></div>
+    <div class="form-group"><label asp-for="SubTitle">Alt başlık</label><input asp-for="SubTitle" class="form-control" /></div>
+    <div class="form-group"><label asp-for="ButtonTitle">Buton yazısı</label><input asp-for="ButtonTitle" class="form-control" /></div>
+    <div class="form-group"><label asp-for="ImageUrl">Görsel adresi</label><input asp-for="ImageUrl" type="url" class="form-control" /></div>
+</div><div class="box-footer"><a asp-action="Index" class="btn btn-default">Listeye Dön</a><button type="submit" class="btn btn-primary pull-right">Kaydet</button></div></form></div>

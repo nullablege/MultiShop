@@ -3,7 +3,11 @@ using MongoDB.Driver;
 using MultiShop.Catalog.Authorization;
 using MultiShop.Catalog.Mapping;
 using MultiShop.Catalog.Services.CategoryServices;
+using MultiShop.Catalog.Services.FeatureSliderServices;
+using MultiShop.Catalog.Services.FeatureServices;
 using MultiShop.Catalog.Services.ProductServices;
+using MultiShop.Catalog.Services.SpecialOfferServices;
+using MultiShop.Catalog.Services.OfferDiscountServices;
 using MultiShop.Catalog.Settings;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
@@ -73,6 +77,18 @@ builder.Services
             settings => !string.IsNullOrWhiteSpace(settings.ProductCollectionName),
             "MongoDb:ProductCollectionName zorunludur.")
         .Validate(
+            settings => !string.IsNullOrWhiteSpace(settings.FeatureSliderCollectionName),
+            "MongoDb:FeatureSliderCollectionName zorunludur.")
+        .Validate(
+            settings => !string.IsNullOrWhiteSpace(settings.SpecialOfferCollectionName),
+            "MongoDb:SpecialOfferCollectionName zorunludur.")
+        .Validate(
+            settings => !string.IsNullOrWhiteSpace(settings.OfferDiscountCollectionName),
+            "MongoDb:OfferDiscountCollectionName zorunludur.")
+        .Validate(
+            settings => !string.IsNullOrWhiteSpace(settings.FeatureCollectionName),
+            "MongoDb:FeatureCollectionName zorunludur.")
+        .Validate(
             settings => !string.IsNullOrWhiteSpace(settings.ConnectionString),
             "MongoDb:ConnectionString zorunludur.")
         .ValidateOnStart();
@@ -99,7 +115,11 @@ builder.Services.AddSingleton<IMongoDatabase>(serviceProvider =>
 
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IFeatureSliderService, FeatureSliderService>();
+builder.Services.AddScoped<IFeatureService, FeatureService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISpecialOfferService, SpecialOfferService>();
+builder.Services.AddScoped<IOfferDiscountService, OfferDiscountService>();
 
 
 var app = builder.Build();

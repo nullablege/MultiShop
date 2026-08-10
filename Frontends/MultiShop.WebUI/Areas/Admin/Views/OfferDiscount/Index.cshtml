@@ -1,0 +1,27 @@
+@model IReadOnlyList<ResultOfferDiscountDto>
+@{
+    ViewData["Title"] = "İndirim Teklifleri";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">İndirim Teklifleri</h3>
+        <div class="box-tools pull-right"><a asp-action="CreateOfferDiscount" class="btn btn-primary">Yeni Teklif</a></div>
+    </div>
+    <div class="box-body table-responsive no-padding">
+        <table class="table table-hover">
+            <tr><th>Başlık</th><th>Alt Başlık</th><th>Buton</th><th>İşlemler</th></tr>
+            @foreach (var offerDiscount in Model)
+            {
+                <tr>
+                    <td>@offerDiscount.Title</td><td>@offerDiscount.SubTitle</td><td>@offerDiscount.ButtonTitle</td>
+                    <td>
+                        <a asp-action="UpdateOfferDiscount" asp-route-id="@offerDiscount.OfferDiscountId" class="btn btn-warning btn-sm">Güncelle</a>
+                        <form asp-action="DeleteOfferDiscount" method="post" class="d-inline"><input type="hidden" name="offerDiscountId" value="@offerDiscount.OfferDiscountId" /><button class="btn btn-danger btn-sm">Sil</button></form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

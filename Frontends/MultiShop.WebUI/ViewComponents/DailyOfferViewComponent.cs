@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices;
 
 namespace MultiShop.WebUI.ViewComponents;
 
 public sealed class DailyOfferViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    private readonly IOfferDiscountService _offerDiscountService;
+
+    public DailyOfferViewComponent(IOfferDiscountService offerDiscountService)
     {
-        return View();
+        _offerDiscountService = offerDiscountService;
+    }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        return View(await _offerDiscountService.GetAllAsync(HttpContext.RequestAborted));
     }
 }
