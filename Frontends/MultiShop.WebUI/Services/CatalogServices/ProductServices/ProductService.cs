@@ -4,7 +4,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
 {
     public sealed class ProductService : IProductService
     {
-        private readonly HttpClient _httpClient; 
+        private readonly HttpClient _httpClient;
 
         public ProductService(HttpClient httpClient)
         {
@@ -59,7 +59,6 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
                 return Array.Empty<ResultProductDto>();
 
             return result;
-            
         }
     }
 }

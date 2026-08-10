@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
 
 namespace MultiShop.WebUI.ViewComponents;
 
 public sealed class NavbarViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke()
+    private readonly ICategoryService _categoryService;
+
+    public NavbarViewComponent(ICategoryService categoryService)
     {
-        return View();
+        _categoryService = categoryService;
+    }
+
+    public async Task<IViewComponentResult> InvokeAsync()
+    {
+        return View(await _categoryService.GetAllAsync(HttpContext.RequestAborted));
     }
 }
