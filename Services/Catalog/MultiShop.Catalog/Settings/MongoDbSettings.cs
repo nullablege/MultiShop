@@ -12,5 +12,6 @@
         public string FeatureCollectionName { get; set; } = string.Empty;
         public string OfferDiscountCollectionName { get; set; } = string.Empty;
         public string BrandCollectionName { get; set; } = string.Empty;
+        public string AboutCollectionName { get; set; } = string.Empty;
     }
 }

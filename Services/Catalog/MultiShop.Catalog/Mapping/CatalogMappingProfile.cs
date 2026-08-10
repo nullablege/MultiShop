@@ -8,6 +8,7 @@ using MultiShop.Catalog.DTOs.ProductImageDTOs;
 using MultiShop.Catalog.DTOs.SpecialOfferDTOs;
 using MultiShop.Catalog.DTOs.OfferDiscountDTOs;
 using MultiShop.Catalog.DTOs.BrandDTOs;
+using MultiShop.Catalog.DTOs.AboutDTOs;
 using MultiShop.Catalog.Entities;
 
 namespace MultiShop.Catalog.Mapping
@@ -63,6 +64,13 @@ namespace MultiShop.Catalog.Mapping
             CreateMap<UpdateBrandDto, Brand>();
             CreateMap<Brand, ResultBrandDto>();
             CreateMap<Brand, GetByIdBrandDto>();
+
+            //About
+            CreateMap<CreateAboutDto, About>()
+                .ForMember(destination => destination.AboutId, options => options.Ignore());
+            CreateMap<UpdateAboutDto, About>();
+            CreateMap<About, ResultAboutDto>();
+            CreateMap<About, GetByIdAboutDto>();
 
             //ProductDetail
             CreateMap<ProductDetailDto , ProductDetail>();

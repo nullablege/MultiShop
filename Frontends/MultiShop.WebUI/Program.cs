@@ -11,6 +11,7 @@ using MultiShop.WebUI.Services.CatalogServices.ProductServices;
 using MultiShop.WebUI.Services.CatalogServices.SpecialOfferServices;
 using MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices;
 using MultiShop.WebUI.Services.CatalogServices.BrandServices;
+using MultiShop.WebUI.Services.CatalogServices.AboutServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -160,6 +161,14 @@ builder.Services
             .GetRequiredService<IOptions<CatalogApiOptions>>()
             .Value;
 
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<IAboutService, AboutService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<CatalogApiOptions>>().Value;
         client.BaseAddress = new Uri(options.BaseUrl);
     })
     .AddHttpMessageHandler<UserAccessTokenHandler>();
