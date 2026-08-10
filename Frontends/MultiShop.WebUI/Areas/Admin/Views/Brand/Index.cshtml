@@ -1,0 +1,9 @@
+@model IReadOnlyList<ResultBrandDto>
+@{ ViewData["Title"] = "Markalar"; Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; }
+<div class="box"><div class="box-header with-border"><h3 class="box-title">Marka Listesi</h3><div class="box-tools pull-right"><a asp-action="CreateBrand" class="btn btn-primary">Yeni Marka</a></div></div>
+<div class="box-body table-responsive no-padding"><table class="table table-hover"><tr><th>Marka Adı</th><th>Görsel</th><th>İşlemler</th></tr>
+@foreach (var brand in Model)
+{
+    <tr><td>@brand.BrandName</td><td><img src="@brand.ImageUrl" alt="@brand.BrandName" style="width: 70px; height: 50px; object-fit: contain;" /></td><td><a asp-action="UpdateBrand" asp-route-id="@brand.BrandId" class="btn btn-warning btn-sm">Güncelle</a> <form asp-action="DeleteBrand" method="post" class="d-inline"><input type="hidden" name="brandId" value="@brand.BrandId" /><button class="btn btn-danger btn-sm">Sil</button></form></td></tr>
+}
+</table></div></div>

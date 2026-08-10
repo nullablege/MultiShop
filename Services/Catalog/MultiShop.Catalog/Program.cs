@@ -8,6 +8,7 @@ using MultiShop.Catalog.Services.FeatureServices;
 using MultiShop.Catalog.Services.ProductServices;
 using MultiShop.Catalog.Services.SpecialOfferServices;
 using MultiShop.Catalog.Services.OfferDiscountServices;
+using MultiShop.Catalog.Services.BrandServices;
 using MultiShop.Catalog.Settings;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
@@ -86,6 +87,9 @@ builder.Services
             settings => !string.IsNullOrWhiteSpace(settings.OfferDiscountCollectionName),
             "MongoDb:OfferDiscountCollectionName zorunludur.")
         .Validate(
+            settings => !string.IsNullOrWhiteSpace(settings.BrandCollectionName),
+            "MongoDb:BrandCollectionName zorunludur.")
+        .Validate(
             settings => !string.IsNullOrWhiteSpace(settings.FeatureCollectionName),
             "MongoDb:FeatureCollectionName zorunludur.")
         .Validate(
@@ -120,6 +124,7 @@ builder.Services.AddScoped<IFeatureService, FeatureService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ISpecialOfferService, SpecialOfferService>();
 builder.Services.AddScoped<IOfferDiscountService, OfferDiscountService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 
 
 var app = builder.Build();

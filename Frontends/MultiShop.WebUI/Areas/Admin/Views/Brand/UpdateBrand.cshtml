@@ -1,0 +1,3 @@
+@model UpdateBrandDto
+@{ ViewData["Title"] = "Markayı Güncelle"; Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; }
+<div class="box box-primary"><form asp-action="UpdateBrand" method="post"><input asp-for="BrandId" type="hidden" /><div class="box-body"><div class="form-group"><label asp-for="BrandName">Marka adı</label><input asp-for="BrandName" class="form-control" /></div><div class="form-group"><label asp-for="ImageUrl">Görsel adresi</label><input asp-for="ImageUrl" type="url" class="form-control" /></div></div><div class="box-footer"><a asp-action="Index" class="btn btn-default">Listeye Dön</a><button type="submit" class="btn btn-primary pull-right">Güncelle</button></div></form></div>
