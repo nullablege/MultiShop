@@ -7,6 +7,21 @@ namespace MultiShop.WebUI.Controllers
 {
     public class AccountController : Controller
     {
+        [HttpGet]
+        public IActionResult Login(string? returnUrl = null)
+        {
+            var redirectUri = Url.IsLocalUrl(returnUrl)
+                ? returnUrl
+                : "/";
+
+            return Challenge(
+                new AuthenticationProperties
+                {
+                    RedirectUri = redirectUri
+                },
+                OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
