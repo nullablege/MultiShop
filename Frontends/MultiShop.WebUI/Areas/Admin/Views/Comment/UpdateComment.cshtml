@@ -1,0 +1,52 @@
+@model AdminCommentListDto
+
+@{
+    ViewData["Title"] = "Yorum Durumunu Güncelle";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Yorum Moderasyonu</h3>
+    </div>
+    <form asp-action="UpdateComment" method="post">
+        <input type="hidden" name="userCommentId" value="@Model.UserCommentId" />
+        <div class="box-body">
+            <dl class="dl-horizontal">
+                <dt>Kullanıcı</dt>
+                <dd>@Model.NameSurname</dd>
+
+                <dt>Ürün ID</dt>
+                <dd>@Model.ProductId</dd>
+
+                <dt>Yorum</dt>
+                <dd>@Model.CommentDetail</dd>
+
+                <dt>Puan</dt>
+                <dd>@Model.Rating / 5</dd>
+
+                <dt>Tarih</dt>
+                <dd>@Model.CreatedDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</dd>
+            </dl>
+
+            <div class="form-group">
+                <label for="status">Moderasyon Durumu</label>
+                <select id="status" name="status" class="form-control">
+                    @if (Model.Status)
+                    {
+                        <option value="true" selected>Aktif</option>
+                        <option value="false">Pasif</option>
+                    }
+                    else
+                    {
+                        <option value="true">Aktif</option>
+                        <option value="false" selected>Pasif / Onay Bekliyor</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="box-footer">
+            <a asp-action="Index" class="btn btn-default">Listeye Dön</a>
+            <button type="submit" class="btn btn-success pull-right">Durumu Güncelle</button>
+        </div>
+    </form>
+</div>

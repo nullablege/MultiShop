@@ -63,8 +63,31 @@ namespace MultiShop.Comment.Controllers
         [HttpGet("admin")]
         public async Task<ActionResult<IReadOnlyList<AdminCommentListDto>>> GetAdminComments(CancellationToken cancellationToken)
         {
-            var comments = await _commentContext.UserComments
-                .OrderByDescending(x => x.CreatedDate)
+
+            var comments = await _commentContext.UserComments.OrderByDescending(x => x.CreatedDate)
+                                                             .Select(x => new AdminCommentListDto
+                                                                {
+                                                                    UserCommentId = x.UserCommentId,
+                                                                    ProductId = x.ProductId,
+                                                                    NameSurname = x.NameSurname,
+                                                                    CommentDetail = x.CommentDetail,
+                                                                    Rating = x.Rating,
+                                                                    CreatedDate = x.CreatedDate,
+                                                                    Status = x.Status
+                                                                }).ToListAsync(cancellationToken);
+
+            return Ok(comments);
+
+        }
+
+        [HttpGet("admin/{id:int}")]
+        public async Task<ActionResult<AdminCommentListDto>> GetAdminComment(
+            int id,
+            CancellationToken cancellationToken)
+        {
+            var comment = await _commentContext.UserComments
+                .AsNoTracking()
+                .Where(x => x.UserCommentId == id)
                 .Select(x => new AdminCommentListDto
                 {
                     UserCommentId = x.UserCommentId,
@@ -75,9 +98,51 @@ namespace MultiShop.Comment.Controllers
                     CreatedDate = x.CreatedDate,
                     Status = x.Status
                 })
-                .ToListAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
 
-            return Ok(comments);
+            if (comment == null)
+                return NotFound();
+
+            return Ok(comment);
         }
-    }
+
+        [HttpPut("admin/{id:int}/status")]
+        public async Task<IActionResult> UpdateCommentStatus(
+            int id,
+            UpdateCommentStatusDto updateCommentStatusDto,
+            CancellationToken cancellationToken)
+        {
+            var comment = await _commentContext.UserComments
+                .SingleOrDefaultAsync(
+                    x => x.UserCommentId == id,
+                    cancellationToken);
+
+            if (comment == null)
+                return NotFound();
+
+            comment.Status = updateCommentStatusDto.Status;
+            await _commentContext.SaveChangesAsync(cancellationToken);
+
+            return NoContent();
+        }
+
+        [HttpDelete("admin/{id:int}")]
+        public async Task<IActionResult> DeleteAdminComment(
+            int id,
+            CancellationToken cancellationToken)
+        {
+            var comment = await _commentContext.UserComments
+                .SingleOrDefaultAsync(
+                    x => x.UserCommentId == id,
+                    cancellationToken);
+
+            if (comment == null)
+                return NotFound();
+
+            _commentContext.UserComments.Remove(comment);
+            await _commentContext.SaveChangesAsync(cancellationToken);
+
+            return NoContent();
+        }
+}
 }
