@@ -52,4 +52,16 @@
     </div>
 </div>
 
-<div class="container-fluid pb-5"><div class="row px-xl-5"><div class="col">@await Component.InvokeAsync("ProductReview", new { productId = Model.ProductId })</div></div></div>
+<div class="container-fluid pb-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-6 mb-30">
+            @await Component.InvokeAsync("ProductReview", new { productId = Model.ProductId })
+        </div>
+        <div class="col-lg-6 mb-30">
+            @await Html.PartialAsync("_CreateCommentForm", new MultiShop.WebUI.Models.CommentDTOs.CreateCommentDto
+            {
+                ProductId = Model.ProductId
+            })
+        </div>
+    </div>
+</div>

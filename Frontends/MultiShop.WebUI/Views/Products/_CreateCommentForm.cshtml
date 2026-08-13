@@ -1,0 +1,44 @@
+@model MultiShop.WebUI.Models.CommentDTOs.CreateCommentDto
+
+<div class="bg-light p-30">
+    <h4 class="mb-4">Bir yorum bırakın</h4>
+    <p class="text-muted small">Yorumunuzun alınması için geçerli bir e-posta adresi giriniz.</p>
+
+    <form asp-action="CreateComment" asp-controller="Products" method="post">
+        <input asp-for="ProductId" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="NameSurname">Adınız soyadınız <span aria-hidden="true">*</span></label>
+            <input asp-for="NameSurname" class="form-control" autocomplete="name" />
+            <span asp-validation-for="NameSurname" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">E-posta adresiniz <span aria-hidden="true">*</span></label>
+            <input asp-for="Email" class="form-control" autocomplete="email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Rating">Ürün puanınız <span aria-hidden="true">*</span></label>
+            <select asp-for="Rating" class="form-control">
+                <option value="0">Puan seçiniz</option>
+                <option value="1">1 / 5</option>
+                <option value="2">2 / 5</option>
+                <option value="3">3 / 5</option>
+                <option value="4">4 / 5</option>
+                <option value="5">5 / 5</option>
+            </select>
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CommentDetail">Yorumunuz <span aria-hidden="true">*</span></label>
+            <textarea asp-for="CommentDetail" rows="5" class="form-control"></textarea>
+            <span asp-validation-for="CommentDetail" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary px-3">Yorum yap</button>
+    </form>
+</div>
