@@ -66,15 +66,17 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="@product.CoverImageUrl" alt="@product.ProductName" />
+                                <a asp-action="Details" asp-route-productId="@product.ProductId">
+                                    <img class="img-fluid w-100" src="@product.CoverImageUrl" alt="@product.ProductName" />
+                                </a>
                                 <div class="product-action">
                                     <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-search"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" asp-action="Details" asp-route-productId="@product.ProductId"><i class="fa fa-search"></i></a>
                                 </div>
                             </div>
                             <div class="text-center py-4">
-                                <a asp-action="Details" class="h6 text-decoration-none text-truncate">@product.ProductName</a>
+                                <a asp-action="Details" asp-route-productId="@product.ProductId" class="h6 text-decoration-none text-truncate">@product.ProductName</a>
                                 <div class="d-flex align-items-center justify-content-center mt-2"><h5>@product.ProductPrice.ToString("0.00") ₺</h5></div>
                             </div>
                         </div>

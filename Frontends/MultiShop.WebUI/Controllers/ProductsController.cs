@@ -21,8 +21,12 @@ public class ProductsController : Controller
         return View(await _productService.GetByCategoryIdAsync(categoryId, cancellationToken));
     }
 
-    public IActionResult Details()
+    public async Task<IActionResult> Details(string productId, CancellationToken cancellationToken = default)
     {
-        return View();
+        var productDetail = await _productService.GetByIdAsync(productId, cancellationToken);
+        if (productDetail == null)
+            return NotFound();
+
+        return View(productDetail);
     }
 }

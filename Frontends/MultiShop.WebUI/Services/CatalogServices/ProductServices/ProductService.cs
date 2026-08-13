@@ -41,9 +41,9 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
             return result;
         }
 
-        public async Task<UpdateProductDto?> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
+        public async Task<GetByIdProductDto?> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<UpdateProductDto>("api/products/" + productId, cancellationToken);
+            return await _httpClient.GetFromJsonAsync<GetByIdProductDto>("api/products/" + productId, cancellationToken);
         }
 
         public async Task UpdateAsync(UpdateProductDto updateProductDto, CancellationToken cancellationToken = default)
@@ -58,6 +58,12 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
             if(result == null)
                 return Array.Empty<ResultProductDto>();
 
+            return result;
+        }
+
+        public async Task<UpdateProductDto?> GetForUpdateAsync(string productId, CancellationToken cancellation = default)
+        {
+            var result = await _httpClient.GetFromJsonAsync<UpdateProductDto>("api/products/"+productId, cancellation);
             return result;
         }
     }

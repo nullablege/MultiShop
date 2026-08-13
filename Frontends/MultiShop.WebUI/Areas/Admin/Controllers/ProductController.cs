@@ -48,7 +48,7 @@ public class ProductController : Controller
     public async Task<IActionResult> UpdateProduct(string id, CancellationToken cancellationToken)
     {
         await LoadCategoriesAsync(cancellationToken);
-        var model = await _productService.GetByIdAsync(id, cancellationToken);
+        var model = await _productService.GetForUpdateAsync(id, cancellationToken);
         return View(model);
     }
 

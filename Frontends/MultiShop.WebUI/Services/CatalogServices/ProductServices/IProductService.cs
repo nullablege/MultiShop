@@ -6,7 +6,8 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
     {
         Task<IReadOnlyList<ResultProductDto>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<IReadOnlyList<ResultProductWithCategoryDto>> GetWithCategoryAsync(CancellationToken cancellationToken = default);
-        Task<UpdateProductDto?> GetByIdAsync(string productId, CancellationToken cancellationToken = default);
+        Task<GetByIdProductDto?> GetByIdAsync(string productId, CancellationToken cancellationToken = default);
+        Task<UpdateProductDto?> GetForUpdateAsync(string productId, CancellationToken cancellation = default);
         Task CreateAsync(CreateProductDto createProductDto, CancellationToken cancellationToken = default);
         Task UpdateAsync(UpdateProductDto updateProductDto, CancellationToken cancellationToken = default);
         Task DeleteAsync(string productId, CancellationToken cancellationToken = default);
