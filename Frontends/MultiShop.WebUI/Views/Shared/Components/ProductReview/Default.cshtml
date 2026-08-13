@@ -1,4 +1,35 @@
+@model IReadOnlyList<MultiShop.WebUI.Models.CommentDTOs.ResultCommentDto>
+
 <div class="bg-light p-30">
-    <h4 class="mb-4">Değerlendirmeler</h4>
-    <div class="media mb-4"><img src="~/theme/img/user.jpg" alt="Kullanıcı" class="img-fluid mr-3 mt-1" style="width: 45px;" /><div class="media-body"><h6>Örnek Kullanıcı<small> - 01 Ağustos 2026</small></h6><div class="text-primary mb-2"><small class="fas fa-star"></small><small class="fas fa-star"></small><small class="fas fa-star"></small><small class="fas fa-star"></small><small class="fas fa-star"></small></div><p>Yorumlar ürün servisi ve kullanıcı oturumu bağlandıktan sonra burada listelenecek.</p></div></div>
+    <h4 class="mb-4">Değerlendirmeler (@Model.Count)</h4>
+
+    @if (Model.Count == 0)
+    {
+        <p class="text-muted mb-0">Bu ürün için henüz onaylanmış yorum bulunmuyor.</p>
+    }
+    else
+    {
+        @foreach (var comment in Model)
+        {
+            <div class="media mb-4">
+                <img src="@(string.IsNullOrWhiteSpace(comment.ImageUrl) ? Url.Content("~/theme/img/user.jpg") : comment.ImageUrl)"
+                     alt="@comment.NameSurname"
+                     class="img-fluid mr-3 mt-1"
+                     style="width: 45px; height: 45px; object-fit: cover;" />
+                <div class="media-body">
+                    <h6>
+                        @comment.NameSurname
+                        <small> - @comment.CreatedDate.ToLocalTime().ToString("dd MMMM yyyy")</small>
+                    </h6>
+                    <div class="text-primary mb-2" aria-label="@comment.Rating / 5 puan">
+                        @for (var star = 1; star <= 5; star++)
+                        {
+                            <small class="fas @(star <= comment.Rating ? "fa-star" : "fa-star text-muted")"></small>
+                        }
+                    </div>
+                    <p class="mb-0">@comment.CommentDetail</p>
+                </div>
+            </div>
+        }
+    }
 </div>

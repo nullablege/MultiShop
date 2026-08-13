@@ -52,4 +52,4 @@
     </div>
 </div>
 
-<div class="container-fluid pb-5"><div class="row px-xl-5"><div class="col">@await Component.InvokeAsync("ProductReview")</div></div></div>
+<div class="container-fluid pb-5"><div class="row px-xl-5"><div class="col">@await Component.InvokeAsync("ProductReview", new { productId = Model.ProductId })</div></div></div>

@@ -190,6 +190,13 @@ builder.Services
     })
     .AddHttpMessageHandler<UserAccessTokenHandler>();
 
+builder.Services
+    .AddHttpClient<IPublicCommentService, PublicCommentService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<CommentApiOptions>>().Value;
+        client.BaseAddress = new Uri(options.BaseUrl);
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
