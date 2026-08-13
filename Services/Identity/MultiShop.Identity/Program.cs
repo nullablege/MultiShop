@@ -74,7 +74,8 @@ builder.Services.AddOpenIddict()
                 "discount_api",
                 "order_api",
                 "cargo_api",
-                "basket_api");
+                "basket_api",
+                "comment_api");
 
 
     })

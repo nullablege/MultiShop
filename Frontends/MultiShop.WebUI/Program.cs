@@ -83,6 +83,7 @@ builder.Services
         options.Scope.Add("email");
         options.Scope.Add("roles");
         options.Scope.Add("catalog_api");
+        options.Scope.Add("comment_api");
     });
 
 builder.Services.AddHttpContextAccessor();

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MultiShop.Comment.Authorization;
 using MultiShop.Comment.Context;
 using MultiShop.Comment.DTOs;
 using MultiShop.Comment.Entities;
@@ -9,6 +10,7 @@ namespace MultiShop.Comment.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = CommentAuthorizationConstants.Policy)]
     public class CommentsController : ControllerBase
     {
         private readonly CommentContext _commentContext;
@@ -18,6 +20,7 @@ namespace MultiShop.Comment.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Create(CreateCommentDto createCommentDto, CancellationToken cancellationToken)
         {
             var comment = new UserComment
@@ -38,6 +41,7 @@ namespace MultiShop.Comment.Controllers
         }
 
         [HttpGet("by-product/{productId}")]
+        [AllowAnonymous]
         public async Task<ActionResult<IReadOnlyList<ResultCommentDto>>> GetByProductId(string productId, CancellationToken cancellationToken)
         {
             var results = await _commentContext.UserComments.Where(x => x.ProductId == productId && x.Status == true)

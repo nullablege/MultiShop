@@ -107,7 +107,8 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Scopes.Roles,
                     OpenIddictConstants.Permissions.Prefixes.Scope + "order_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "comment_api"
                 },
 
                 Requirements =
@@ -165,7 +166,8 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Prefixes.Scope + "discount_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "order_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "comment_api"
                 },
 
                 Requirements =
