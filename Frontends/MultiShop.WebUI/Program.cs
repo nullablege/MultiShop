@@ -12,6 +12,7 @@ using MultiShop.WebUI.Services.CatalogServices.SpecialOfferServices;
 using MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices;
 using MultiShop.WebUI.Services.CatalogServices.BrandServices;
 using MultiShop.WebUI.Services.CatalogServices.AboutServices;
+using MultiShop.WebUI.Services.CommentServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,13 @@ builder.Services.AddOptions<CatalogApiOptions>()
     .Validate(
         options => Uri.TryCreate(options.BaseUrl, UriKind.Absolute, out _),
         "Catalog API adresi geçerli bir mutlak URI olmalıdır.")
+    .ValidateOnStart();
+
+builder.Services.AddOptions<CommentApiOptions>()
+    .BindConfiguration(CommentApiOptions.SectionName)
+    .Validate(
+        options => Uri.TryCreate(options.BaseUrl, UriKind.Absolute, out _),
+        "Comment API adresi geçerli bir mutlak URI olmalıdır.")
     .ValidateOnStart();
 
 builder.Services.AddOptions<IdentityProviderOptions>()
@@ -170,6 +178,14 @@ builder.Services
     .AddHttpClient<IAboutService, AboutService>((serviceProvider, client) =>
     {
         var options = serviceProvider.GetRequiredService<IOptions<CatalogApiOptions>>().Value;
+        client.BaseAddress = new Uri(options.BaseUrl);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<ICommentService, CommentService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<CommentApiOptions>>().Value;
         client.BaseAddress = new Uri(options.BaseUrl);
     })
     .AddHttpMessageHandler<UserAccessTokenHandler>();

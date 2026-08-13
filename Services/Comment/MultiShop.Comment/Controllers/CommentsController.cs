@@ -59,5 +59,25 @@ namespace MultiShop.Comment.Controllers
                                                             .ToListAsync(cancellationToken);
             return Ok(results);
         }
+
+        [HttpGet("admin")]
+        public async Task<ActionResult<IReadOnlyList<AdminCommentListDto>>> GetAdminComments(CancellationToken cancellationToken)
+        {
+            var comments = await _commentContext.UserComments
+                .OrderByDescending(x => x.CreatedDate)
+                .Select(x => new AdminCommentListDto
+                {
+                    UserCommentId = x.UserCommentId,
+                    ProductId = x.ProductId,
+                    NameSurname = x.NameSurname,
+                    CommentDetail = x.CommentDetail,
+                    Rating = x.Rating,
+                    CreatedDate = x.CreatedDate,
+                    Status = x.Status
+                })
+                .ToListAsync(cancellationToken);
+
+            return Ok(comments);
+        }
     }
 }
