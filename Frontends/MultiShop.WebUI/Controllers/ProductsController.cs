@@ -1,15 +1,42 @@
 using Microsoft.AspNetCore.Mvc;
+using MultiShop.WebUI.Models.CommentDTOs;
 using MultiShop.WebUI.Services.CatalogServices.ProductServices;
+using MultiShop.WebUI.Services.CommentServices;
 
 namespace MultiShop.WebUI.Controllers;
 
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
+    private readonly IPublicCommentService _publicCommentService;
 
-    public ProductsController(IProductService productService)
+
+    public ProductsController(IProductService productService, IPublicCommentService publicCommentService)
     {
+        _publicCommentService = publicCommentService;
         _productService = productService;
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> CreateComment(CreateCommentDto createCommentDto, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(createCommentDto.ProductId))
+            return NotFound();
+
+        if (!ModelState.IsValid)
+        {
+            var product = await _productService.GetByIdAsync(createCommentDto.ProductId, cancellationToken);
+
+            if (product == null)
+                return NotFound();
+
+            return View("Details", product);
+        }
+
+        await _publicCommentService.CreateCommentAsync(createCommentDto, cancellationToken);
+        return RedirectToAction(nameof(Details), new { productId = createCommentDto.ProductId });
+
     }
 
     public async Task<IActionResult> Index(string categoryId, CancellationToken cancellationToken = default)

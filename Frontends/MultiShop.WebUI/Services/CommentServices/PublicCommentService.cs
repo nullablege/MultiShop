@@ -11,6 +11,18 @@ namespace MultiShop.WebUI.Services.CommentServices
             _httpClient = httpClient;
         }
 
+        public async Task CreateCommentAsync(
+            CreateCommentDto createCommentDto,
+            CancellationToken cancellationToken = default)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/comments",
+                createCommentDto,
+                cancellationToken);
+
+            response.EnsureSuccessStatusCode();
+        }
+
         public async Task<IReadOnlyList<ResultCommentDto>> GetByProductIdAsync(
             string productId,
             CancellationToken cancellationToken = default)

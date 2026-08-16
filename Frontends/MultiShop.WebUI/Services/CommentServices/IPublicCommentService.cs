@@ -7,5 +7,8 @@ namespace MultiShop.WebUI.Services.CommentServices
         Task<IReadOnlyList<ResultCommentDto>> GetByProductIdAsync(
             string productId,
             CancellationToken cancellationToken = default);
+        Task CreateCommentAsync(
+            CreateCommentDto createCommentDto,
+            CancellationToken cancellationToken = default);
     }
 }
