@@ -13,6 +13,7 @@ using MultiShop.Catalog.Services.AboutServices;
 using MultiShop.Catalog.Settings;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
+using MultiShop.Catalog.Services.ContactServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,6 +100,9 @@ builder.Services
         .Validate(
             settings => !string.IsNullOrWhiteSpace(settings.ConnectionString),
             "MongoDb:ConnectionString zorunludur.")
+        .Validate(
+            settings => !string.IsNullOrWhiteSpace(settings.ContactCollectionName),
+            "MongoDb:ContactCollectionName zorunludur.")
         .ValidateOnStart();
 
 builder.Services.AddAutoMapper(_ => { }, typeof(CatalogMappingProfile));
@@ -130,6 +134,7 @@ builder.Services.AddScoped<ISpecialOfferService, SpecialOfferService>();
 builder.Services.AddScoped<IOfferDiscountService, OfferDiscountService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 
 var app = builder.Build();

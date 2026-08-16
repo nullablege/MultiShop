@@ -10,6 +10,7 @@ using MultiShop.Catalog.DTOs.OfferDiscountDTOs;
 using MultiShop.Catalog.DTOs.BrandDTOs;
 using MultiShop.Catalog.DTOs.AboutDTOs;
 using MultiShop.Catalog.Entities;
+using MultiShop.Catalog.DTOs.ContactDTOs;
 
 namespace MultiShop.Catalog.Mapping
 {
@@ -79,6 +80,12 @@ namespace MultiShop.Catalog.Mapping
             //ProductImage
             CreateMap<ProductImageDto, ProductImage>();
             CreateMap<ProductImage, ProductImageDto>();
+
+            //Contract
+            CreateMap<CreateContactDto, Contact>()
+                .ForMember(contact => contact.ContactId, options => options.Ignore())
+                .ForMember(contact => contact.IsRead, options => options.Ignore())
+                .ForMember(contact => contact.CreatedAt, options => options.Ignore());
         }
     }
 }
