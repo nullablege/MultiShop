@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using MultiShop.WebUI.Configuration;
 using MultiShop.WebUI.Handlers;
+using MultiShop.WebUI.Services.Authentication;
 using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
 using MultiShop.WebUI.Services.CatalogServices.FeatureSliderServices;
 using MultiShop.WebUI.Services.CatalogServices.FeatureServices;
@@ -45,6 +46,19 @@ builder.Services.AddOptions<IdentityProviderOptions>()
     .Validate(
         options => !string.IsNullOrWhiteSpace(options.ClientSecret),
         "Identity Provider ClientSecret zorunludur.")
+    .ValidateOnStart();
+
+builder.Services.AddOptions<CatalogClientCredentialsOptions>()
+    .BindConfiguration(CatalogClientCredentialsOptions.SectionName)
+    .Validate(
+        options => !string.IsNullOrWhiteSpace(options.ClientId),
+        "Catalog ziyaretçi ClientId zorunludur.")
+    .Validate(
+        options => !string.IsNullOrWhiteSpace(options.ClientSecret),
+        "Catalog ziyaretçi ClientSecret zorunludur.")
+    .Validate(
+        options => string.Equals(options.Scope, "catalog_api", StringComparison.Ordinal),
+        "Catalog ziyaretçi kapsamı yalnızca catalog_api olmalıdır.")
     .ValidateOnStart();
 
 var identityProviderSettings = builder.Configuration
@@ -96,6 +110,12 @@ builder.Services
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<UserAccessTokenHandler>();
+builder.Services.AddTransient<CatalogClientCredentialsHandler>();
+builder.Services.AddSingleton<ICatalogAccessTokenService, CatalogAccessTokenService>();
+builder.Services.AddHttpClient("IdentityProvider", client =>
+{
+    client.BaseAddress = new Uri(identityProviderSettings.Authority.TrimEnd('/') + "/");
+});
 
 builder.Services
     .AddHttpClient<ICategoryService, CategoryService>((serviceProvider, client) =>
@@ -106,7 +126,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<IProductService, ProductService>((serviceProvider, client) =>
@@ -117,7 +137,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<IFeatureSliderService, FeatureSliderService>((serviceProvider, client) =>
@@ -128,7 +148,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<ISpecialOfferService, SpecialOfferService>((serviceProvider, client) =>
@@ -139,7 +159,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<IFeatureService, FeatureService>((serviceProvider, client) =>
@@ -150,7 +170,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<IOfferDiscountService, OfferDiscountService>((serviceProvider, client) =>
@@ -161,7 +181,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<IBrandService, BrandService>((serviceProvider, client) =>
@@ -172,7 +192,7 @@ builder.Services
 
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<IAboutService, AboutService>((serviceProvider, client) =>
@@ -180,7 +200,7 @@ builder.Services
         var options = serviceProvider.GetRequiredService<IOptions<CatalogApiOptions>>().Value;
         client.BaseAddress = new Uri(options.BaseUrl);
     })
-    .AddHttpMessageHandler<UserAccessTokenHandler>();
+    .AddHttpMessageHandler<CatalogClientCredentialsHandler>();
 
 builder.Services
     .AddHttpClient<ICommentService, CommentService>((serviceProvider, client) =>
