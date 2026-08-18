@@ -11,7 +11,15 @@
           "Port": 7239
         }
       ],
-      "Timeout": 30000
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "catalog_api"
+        ]
+      }
     },
     {
       "UpstreamPathTemplate": "/services/discount/{everything}",
@@ -24,7 +32,15 @@
           "Port": 7101
         }
       ],
-      "Timeout": 30000
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "discount_api"
+        ]
+      }
     },
     {
       "UpstreamPathTemplate": "/services/order/{everything}",
@@ -37,7 +53,15 @@
           "Port": 7012
         }
       ],
-      "Timeout": 30000
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "order_api"
+        ]
+      }
     },
     {
       "UpstreamPathTemplate": "/services/cargo/{everything}",
@@ -50,7 +74,15 @@
           "Port": 7255
         }
       ],
-      "Timeout": 30000
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "cargo_api"
+        ]
+      }
     },
     {
       "UpstreamPathTemplate": "/services/basket/{everything}",
@@ -63,7 +95,15 @@
           "Port": 7036
         }
       ],
-      "Timeout": 30000
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "basket_api"
+        ]
+      }
     },
     {
       "UpstreamPathTemplate": "/services/comment/{everything}",
