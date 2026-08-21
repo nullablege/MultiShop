@@ -1,5 +1,8 @@
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
 <partial name="_HeadPartial" />
 <body>
     @await Component.InvokeAsync("Topbar")
@@ -15,7 +18,7 @@
             <div class="col-lg-4 col-6 text-left">
                 <form>
                     <div class="input-group">
-                        <input class="form-control" placeholder="Ürün ara" type="search" />
+                        <input class="form-control" placeholder="@Localizer["SearchProducts"]" type="search" />
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
                         </div>
@@ -23,8 +26,8 @@
                 </form>
             </div>
             <div class="col-lg-4 col-6 text-right">
-                <p class="m-0">Müşteri Hizmetleri</p>
-                <h5 class="m-0">Yakında</h5>
+                <p class="m-0">@Localizer["CustomerService"]</p>
+                <h5 class="m-0">@Localizer["ComingSoon"]</h5>
             </div>
         </div>
     </div>

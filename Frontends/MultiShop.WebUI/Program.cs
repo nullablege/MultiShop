@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using MultiShop.WebUI;
 using MultiShop.WebUI.Authentication;
 using MultiShop.WebUI.Configuration;
 using MultiShop.WebUI.Handlers;
@@ -28,8 +30,24 @@ using MultiShop.WebUI.Services.UserServices;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 builder.Services.AddSignalR();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = LocalizationSettings.SupportedCultures
+        .Select(culture => new System.Globalization.CultureInfo(culture))
+        .ToArray();
+
+    options.DefaultRequestCulture = new RequestCulture(LocalizationSettings.DefaultCulture);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = [new CookieRequestCultureProvider()];
+});
 
 
 builder.Services.AddOptions<IdentityProviderOptions>()
@@ -359,6 +377,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRequestLocalization();
 
 app.UseRouting();
 app.UseMiddleware<UserAuthenticationChallengeMiddleware>();

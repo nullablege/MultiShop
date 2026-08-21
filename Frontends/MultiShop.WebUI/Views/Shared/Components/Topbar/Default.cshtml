@@ -1,15 +1,26 @@
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
+
 <div class="container-fluid">
     <div class="row bg-secondary py-1 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
-                <a class="text-body mr-3" href="#">Hakkımızda</a>
-                <a class="text-body mr-3" href="#">İletişim</a>
-                <a class="text-body mr-3" href="#">Yardım</a>
+                <a class="text-body mr-3" href="#">@Localizer["About"]</a>
+                <a class="text-body mr-3" asp-controller="Contact" asp-action="Index">@Localizer["Contact"]</a>
+                <a class="text-body mr-3" href="#">@Localizer["Help"]</a>
             </div>
         </div>
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
-                <a class="btn btn-sm btn-light" asp-area="User" asp-controller="Dashboard" asp-action="Index">Hesabım</a>
+                <form asp-area="" asp-controller="Culture" asp-action="Set" method="post" class="mr-2" title="@Localizer["Language"]">
+                    <input type="hidden" name="returnUrl" value="@(Context.Request.PathBase + Context.Request.Path + Context.Request.QueryString)" />
+                    <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["Language"]">
+                        <button type="submit" name="culture" value="tr-TR" class="btn @(CultureInfo.CurrentUICulture.Name == "tr-TR" ? "btn-primary" : "btn-light")">TR</button>
+                        <button type="submit" name="culture" value="en-US" class="btn @(CultureInfo.CurrentUICulture.Name == "en-US" ? "btn-primary" : "btn-light")">EN</button>
+                    </div>
+                </form>
+                <a class="btn btn-sm btn-light" asp-area="User" asp-controller="Dashboard" asp-action="Index">@Localizer["MyAccount"]</a>
             </div>
         </div>
     </div>
