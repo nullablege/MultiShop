@@ -71,5 +71,16 @@ namespace MultiShop.Identity.Controllers
             return Ok(users);
         }
 
+        [HttpGet("count")]
+        [Authorize(
+            AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme,
+            Policy = IdentityAuthorizationConstants.ManagementPolicy)]
+        public async Task<ActionResult<UserCountDto>> GetCountAsync(
+            CancellationToken cancellationToken)
+        {
+            var count = await _userManager.Users.CountAsync(cancellationToken);
+            return Ok(new UserCountDto { Count = count });
+        }
+
     }
 }

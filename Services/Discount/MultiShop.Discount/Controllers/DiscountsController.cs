@@ -89,6 +89,7 @@ namespace MultiShop.Discount.Controllers
         }
 
         [HttpGet("count")]
+        [Authorize(Roles = DiscountAuthorizationConstants.ManagementRoles)]
         public async Task<ActionResult<int>> GetCount(CancellationToken cancellationToken = default)
         {
             var value = await _discountService.GetDiscountCouponCountAsync(cancellationToken);

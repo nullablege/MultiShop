@@ -80,6 +80,25 @@ namespace MultiShop.Comment.Controllers
 
         }
 
+        [HttpGet("admin/statistics")]
+        [Authorize(Policy = CommentAuthorizationConstants.ManagementPolicy)]
+        public async Task<ActionResult<CommentStatisticsDto>> GetStatisticsAsync(
+            CancellationToken cancellationToken)
+        {
+            var totalCount = await _commentContext.UserComments.CountAsync(cancellationToken);
+            var approvedCount = await _commentContext.UserComments
+                .CountAsync(comment => comment.Status, cancellationToken);
+            var pendingCount = await _commentContext.UserComments
+                .CountAsync(comment => !comment.Status, cancellationToken);
+
+            return Ok(new CommentStatisticsDto
+            {
+                TotalCount = totalCount,
+                ApprovedCount = approvedCount,
+                PendingCount = pendingCount
+            });
+        }
+
         [HttpGet("admin/{id:int}")]
         public async Task<ActionResult<AdminCommentListDto>> GetAdminComment(
             int id,

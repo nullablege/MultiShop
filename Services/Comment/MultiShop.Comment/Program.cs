@@ -59,6 +59,18 @@ builder.Services.AddAuthorization(options =>
             policy.RequireAssertion(context =>
                 context.User.HasScope(CommentAuthorizationConstants.Scope));
         });
+
+    options.AddPolicy(
+        CommentAuthorizationConstants.ManagementPolicy,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireAssertion(context =>
+                context.User.HasScope(CommentAuthorizationConstants.Scope));
+            policy.RequireRole(
+                CommentAuthorizationConstants.AdminRole,
+                CommentAuthorizationConstants.ManagerRole);
+        });
 });
 
 var app = builder.Build();

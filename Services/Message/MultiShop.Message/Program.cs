@@ -64,6 +64,18 @@ builder.Services.AddAuthorization(options =>
             policy.RequireAssertion(context =>
                 context.User.HasScope(MessageAuthorizationConstants.Scope));
         });
+
+    options.AddPolicy(
+        MessageAuthorizationConstants.ManagementPolicy,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireAssertion(context =>
+                context.User.HasScope(MessageAuthorizationConstants.Scope));
+            policy.RequireRole(
+                MessageAuthorizationConstants.AdminRole,
+                MessageAuthorizationConstants.ManagerRole);
+        });
 });
 
 var app = builder.Build();

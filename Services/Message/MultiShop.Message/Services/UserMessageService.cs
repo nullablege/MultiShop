@@ -93,5 +93,10 @@ namespace MultiShop.Message.Services
             }
             return true;
         }
+
+        public Task<int> GetTotalCountAsync(CancellationToken cancellationToken = default)
+        {
+            return _context.UserMessages.CountAsync(cancellationToken);
+        }
     }
 }

@@ -14,6 +14,7 @@ using MultiShop.Catalog.Settings;
 using OpenIddict.Abstractions;
 using OpenIddict.Validation.AspNetCore;
 using MultiShop.Catalog.Services.ContactServices;
+using MultiShop.Catalog.Services.StatisticServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,18 @@ builder.Services.AddAuthorization(options =>
             policy.RequireAssertion(context =>
                 context.User.HasScope(
                     CatalogAuthorizationConstants.Scope));
+        });
+
+    options.AddPolicy(
+        CatalogAuthorizationConstants.ManagementPolicy,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireAssertion(context =>
+                context.User.HasScope(CatalogAuthorizationConstants.Scope));
+            policy.RequireRole(
+                CatalogAuthorizationConstants.AdminRole,
+                CatalogAuthorizationConstants.ManagerRole);
         });
 });
 
@@ -135,6 +148,7 @@ builder.Services.AddScoped<IOfferDiscountService, OfferDiscountService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<ICatalogStatisticsService, CatalogStatisticsService>();
 
 
 var app = builder.Build();

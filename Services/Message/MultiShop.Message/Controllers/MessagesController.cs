@@ -85,6 +85,15 @@ public sealed class MessagesController : ControllerBase
         return updated ? NoContent() : NotFound();
     }
 
+    [HttpGet("admin/statistics")]
+    [Authorize(Policy = MessageAuthorizationConstants.ManagementPolicy)]
+    public async Task<ActionResult<MessageStatisticsDto>> GetStatisticsAsync(
+        CancellationToken cancellationToken)
+    {
+        var totalCount = await _userMessageService.GetTotalCountAsync(cancellationToken);
+        return Ok(new MessageStatisticsDto { TotalCount = totalCount });
+    }
+
     private string? GetCurrentUserId()
     {
         var userId = User.FindFirst(OpenIddictConstants.Claims.Subject)?.Value;

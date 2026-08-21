@@ -10,5 +10,6 @@ namespace MultiShop.Message.Services
 
         Task<IReadOnlyList<SentMessageDto>> GetSentAsync(string senderId, CancellationToken cancellationToken = default);
         Task<bool> MarkAsReadAsync(int messageId, string receiverId, CancellationToken cancellationToken = default);
+        Task<int> GetTotalCountAsync(CancellationToken cancellationToken = default);
     }
 }
