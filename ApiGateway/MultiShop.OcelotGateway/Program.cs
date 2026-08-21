@@ -15,12 +15,12 @@ builder.Services.AddOptions<IdentityProviderOptions>()
     .Validate(options =>
     {
         return Uri.TryCreate(options.Issuer, UriKind.Absolute, out var issueUri) && issueUri.Scheme == Uri.UriSchemeHttps;
-    }, "IdentityProvider:Issuer geçerli bir HTTPS adresi olmalýdýr. ")
+    }, "IdentityProvider:Issuer geï¿½erli bir HTTPS adresi olmalï¿½dï¿½r. ")
     .ValidateOnStart();
 
 var identityProviderOptions = builder.Configuration
     .GetRequiredSection(IdentityProviderOptions.SectionName)
-    .Get<IdentityProviderOptions>() ?? throw new InvalidOperationException("IdentityProvider yapýlandýrmasý bulunamadý");
+    .Get<IdentityProviderOptions>() ?? throw new InvalidOperationException("IdentityProvider yapï¿½landï¿½rmasï¿½ bulunamadï¿½");
 
 builder.Services.AddOpenIddict()
     .AddValidation(options =>
@@ -33,7 +33,8 @@ builder.Services.AddOpenIddict()
             "order_api",
             "cargo_api",
             "basket_api",
-            "comment_api"
+            "comment_api",
+            "message_api"
             );
 
         options.UseSystemNetHttp();

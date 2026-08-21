@@ -106,9 +106,9 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/services/comment/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "DownstreamPathTemplate": "/api/{everything}",
+      "UpstreamPathTemplate": "/services/comment/comments",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/comments",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -117,6 +117,84 @@
         }
       ],
       "Timeout": 30000
+    },
+    {
+      "UpstreamPathTemplate": "/services/comment/comments/by-product/{productId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/comments/by-product/{productId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 57518
+        }
+      ],
+      "Timeout": 30000
+    },
+    {
+      "UpstreamPathTemplate": "/services/comment/comments/admin/{everything}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/comments/admin/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 57518
+        }
+      ],
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "comment_api"
+        ]
+      }
+
+    },
+    {
+      "UpstreamPathTemplate": "/services/comment/comments/admin",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/comments/admin",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 57518
+        }
+      ],
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "comment_api"
+        ]
+      }
+
+    },
+    {
+      "UpstreamPathTemplate": "/services/message/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7280
+        }
+      ],
+      "Timeout": 30000,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKeys": [
+          "OpenIddict.Validation.AspNetCore"
+        ],
+        "AllowedScopes": [
+          "message_api"
+        ]
+      }
     }
   ],
   "GlobalConfiguration": {
