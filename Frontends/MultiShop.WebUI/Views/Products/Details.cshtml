@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = Model.ProductName;
+    ViewData["Breadcrumbs"] = new BreadcrumbItemViewModel[]
+    {
+        new("Ana Sayfa", "Home", "Index"),
+        new("Ürünler", "Products", "Index"),
+        new("Ürün Detayı")
+    };
 }
-
-<div class="container-fluid">
-    <div class="row px-xl-5">
-        <div class="col-12"><nav class="breadcrumb bg-light mb-30"><a class="breadcrumb-item text-dark" asp-action="Index">Ürünler</a><span class="breadcrumb-item active">Ürün Detayı</span></nav></div>
-    </div>
-</div>
 
 <div class="container-fluid pb-5">
     <div class="row px-xl-5">
@@ -44,8 +44,7 @@
                     <p class="text-muted">@Model.ProductDetail.Information</p>
                 }
                 <div class="d-flex align-items-center mb-4 pt-2">
-                    <div class="input-group quantity mr-3" style="width: 130px;"><div class="input-group-btn"><button class="btn btn-primary btn-minus" type="button"><i class="fa fa-minus"></i></button></div><input type="text" class="form-control bg-secondary border-0 text-center" value="1" /><div class="input-group-btn"><button class="btn btn-primary btn-plus" type="button"><i class="fa fa-plus"></i></button></div></div>
-                    <button class="btn btn-primary px-3" type="button"><i class="fa fa-shopping-cart mr-1"></i> Sepete Ekle</button>
+                    <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex align-items-center"><input type="hidden" name="productId" value="@Model.ProductId" /><div class="input-group quantity mr-3" style="width: 130px;"><div class="input-group-btn"><button class="btn btn-primary btn-minus" type="button"><i class="fa fa-minus"></i></button></div><input type="text" name="quantity" class="form-control bg-secondary border-0 text-center" value="1" inputmode="numeric" /><div class="input-group-btn"><button class="btn btn-primary btn-plus" type="button"><i class="fa fa-plus"></i></button></div></div><button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i> Sepete Ekle</button></form>
                 </div>
             </div>
         </div>
