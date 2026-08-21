@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using MultiShop.WebUI.Authentication;
 using MultiShop.WebUI.Configuration;
 using MultiShop.WebUI.Handlers;
+using MultiShop.WebUI.Hubs;
 using MultiShop.WebUI.Services.Authentication;
 using MultiShop.WebUI.Services.BasketServices;
 using MultiShop.WebUI.Services.CatalogServices.AboutServices;
@@ -28,6 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 
 
 builder.Services.AddOptions<IdentityProviderOptions>()
@@ -373,6 +375,8 @@ app.MapAreaControllerRoute(
     name: "admin",
     areaName: "Admin",
     pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
+
+app.MapHub<AdminStatisticsHub>("/hubs/admin-statistics");
 
 app.MapControllerRoute(
     name: "default",
