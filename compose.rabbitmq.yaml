@@ -1,0 +1,21 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.3.4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: multishop
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?RABBITMQ_DEFAULT_PASS must be set}
+      RABBITMQ_DEFAULT_VHOST: multishop
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+volumes:
+  rabbitmq-data:
