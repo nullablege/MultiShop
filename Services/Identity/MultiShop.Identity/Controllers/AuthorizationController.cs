@@ -85,30 +85,30 @@ namespace MultiShop.Identity.Controllers
                 return SignIn(clientPrincipal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
 
-            if (!request.IsAuthorizationCodeGrantType())
-                throw new InvalidOperationException("Grant Type Hata");
+            if (!request.IsAuthorizationCodeGrantType() && !request.IsRefreshTokenGrantType())
+                throw new InvalidOperationException("Desteklenmeyen grant type.");
 
 
             var authenticationResult = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
 
-            var codePrincipal = authenticationResult.Principal;
-            if (!authenticationResult.Succeeded || codePrincipal == null)
-                return InvalidGrant("Authorization code doğrulanamadı");
+            var tokenPrincipal = authenticationResult.Principal;
+            if (!authenticationResult.Succeeded || tokenPrincipal == null)
+                return InvalidGrant("Token isteği doğrulanamadı");
 
 
-            var userId = authenticationResult.Principal?.GetClaim(OpenIddictConstants.Claims.Subject);
+            var userId = tokenPrincipal.GetClaim(OpenIddictConstants.Claims.Subject);
             if (string.IsNullOrWhiteSpace(userId))
-                return InvalidGrant("Authorization code kullanıcı bilgisi içermiyor");
+                return InvalidGrant("Token kullanıcı bilgisi içermiyor");
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
-                return InvalidGrant("Authorization code'a bağlı kullanıcı bulunamadı");
+                return InvalidGrant("Tokena bağlı kullanıcı bulunamadı");
 
             if (!await _signInManager.CanSignInAsync(user))
                 return InvalidGrant("Kullanıcının girişine izin verilmiyor");
 
 
-            var principal = await _openIddictPrincipalService.CreateAsync(user, codePrincipal.GetScopes(), cancellationToken);
+            var principal = await _openIddictPrincipalService.CreateAsync(user, tokenPrincipal.GetScopes(), cancellationToken);
             return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
 
         }

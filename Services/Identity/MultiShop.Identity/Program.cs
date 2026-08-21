@@ -41,10 +41,12 @@ builder.Services.AddOpenIddict()
 
         options.SetAuthorizationCodeLifetime(TimeSpan.FromMinutes(5));
         options.SetAccessTokenLifetime(TimeSpan.FromMinutes(15));
+        options.SetRefreshTokenLifetime(TimeSpan.FromDays(7));
 
         options.AllowAuthorizationCodeFlow()
         .RequireProofKeyForCodeExchange();
 
+        options.AllowRefreshTokenFlow();
         options.AllowClientCredentialsFlow();
 
         if (builder.Environment.IsDevelopment())
@@ -75,7 +77,8 @@ builder.Services.AddOpenIddict()
                 "order_api",
                 "cargo_api",
                 "basket_api",
-                "comment_api");
+                "comment_api",
+                "message_api");
 
 
     })

@@ -1,0 +1,25 @@
+@model MultiShop.WebUI.Models.Identity.UserDetailViewModel
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<div class="container-fluid py-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="bg-light p-4">
+                <h3 class="mb-4">Profilim</h3>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Kullanıcı adı</dt>
+                    <dd class="col-sm-8">@Model.UserName</dd>
+                    <dt class="col-sm-4">E-posta</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+                    <dt class="col-sm-4">Ad</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+                    <dt class="col-sm-4">Soyad</dt>
+                    <dd class="col-sm-8">@Model.Surname</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

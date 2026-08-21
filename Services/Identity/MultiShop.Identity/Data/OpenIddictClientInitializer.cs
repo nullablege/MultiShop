@@ -108,7 +108,8 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Prefixes.Scope + "order_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "comment_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "comment_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "message_api"
                 },
 
                 Requirements =
@@ -156,6 +157,7 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Endpoints.Token,
 
                     OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
+                    OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
                     OpenIddictConstants.Permissions.ResponseTypes.Code,
 
                     OpenIddictConstants.Permissions.Scopes.Email,
@@ -167,7 +169,9 @@ namespace MultiShop.Identity.Data
                     OpenIddictConstants.Permissions.Prefixes.Scope + "order_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "cargo_api",
                     OpenIddictConstants.Permissions.Prefixes.Scope + "basket_api",
-                    OpenIddictConstants.Permissions.Prefixes.Scope + "comment_api"
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "comment_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "identity_api",
+                    OpenIddictConstants.Permissions.Prefixes.Scope + "message_api"
                 },
 
                 Requirements =
