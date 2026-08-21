@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("UserAreaHead")
+<body class="user-area-body">
+    <div class="user-area-shell">
+        @await Component.InvokeAsync("UserAreaSidebar")
+        <div class="user-area-main">
+            @await Component.InvokeAsync("UserAreaNavbar")
+            <main class="user-area-content" role="main">
+                @RenderBody()
+            </main>
+            <footer class="user-area-footer">© @DateTime.UtcNow.Year MultiShop Kullanıcı Paneli</footer>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,29 @@
+@model IReadOnlyList<OrderHistoryItemDto>
+
+@{
+    ViewData["Title"] = "Sipariş Geçmişim";
+    var rowClasses = new[] { "table-info", "table-warning", "table-success", "table-primary" };
+}
+
+<section class="user-area-panel">
+    <div class="user-area-panel-heading"><div><p>SİPARİŞLER</p><h2>Sipariş geçmişim</h2></div><span>@Model.Count kayıt</span></div>
+    @if (Model.Count == 0)
+    {
+        <div class="user-area-empty"><i class="fas fa-box-open"></i><h3>Henüz sipariş bulunmuyor</h3><p>Sipariş verdiğinde geçmişini burada görebileceksin.</p></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead><tr><th>#</th><th>Toplam fiyat</th><th>Sipariş tarihi</th><th>İşlem</th></tr></thead>
+                <tbody>
+                    @for (var index = 0; index < Model.Count; index++)
+                    {
+                        var order = Model[index];
+                        <tr class="@rowClasses[index % rowClasses.Length]"><th>@(index + 1)</th><td>@order.TotalPrice.ToString("N2") ₺</td><td>@order.OrderDate.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td><td><button class="btn btn-sm btn-dark" type="button" disabled>Detaylar</button></td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

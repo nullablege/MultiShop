@@ -1,0 +1,27 @@
+@model UserDetailViewModel
+
+@{
+    ViewData["Title"] = "Hesabım";
+    var fullName = $"{Model.Name} {Model.Surname}".Trim();
+    var displayName = string.IsNullOrWhiteSpace(fullName) ? Model.UserName : fullName;
+}
+
+<section class="user-area-welcome">
+    <div><p>Tekrar hoş geldin</p><h2>@displayName</h2><span>Hesap bilgilerine ve alışveriş işlemlerine buradan ulaşabilirsin.</span></div>
+    <i class="fas fa-user-circle" aria-hidden="true"></i>
+</section>
+
+<div class="user-area-grid">
+    <article class="user-area-card"><i class="fas fa-id-card"></i><div><span>Kullanıcı adı</span><strong>@Model.UserName</strong></div></article>
+    <article class="user-area-card"><i class="fas fa-envelope"></i><div><span>E-posta</span><strong>@Model.Email</strong></div></article>
+    <article class="user-area-card"><i class="fas fa-shopping-bag"></i><div><span>Sipariş geçmişi</span><strong>API adımı bekleniyor</strong></div></article>
+</div>
+
+<section class="user-area-panel">
+    <h3>Hızlı işlemler</h3>
+    <div class="user-area-actions">
+        <a asp-area="" asp-controller="Profile" asp-action="Index"><i class="fas fa-user-edit"></i> Profil bilgilerini görüntüle</a>
+        <a asp-area="" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i> Sepete git</a>
+        <a asp-area="" asp-controller="Products" asp-action="Index"><i class="fas fa-search"></i> Ürünleri incele</a>
+    </div>
+</section>

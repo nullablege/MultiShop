@@ -1,0 +1,30 @@
+@model MultiShop.WebUI.Models.Order.CreateOrderAddressDto
+
+@{
+    ViewData["Title"] = "Sipariş";
+    ViewData["Breadcrumbs"] = new BreadcrumbItemViewModel[]
+    {
+        new("Ana Sayfa", "Home", "Index"),
+        new("Sepetim", "Cart", "Index"),
+        new("Sipariş")
+    };
+}
+
+<form asp-controller="Order" asp-action="CreateAddress" method="post">
+    <div class="container-fluid">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger mx-xl-5" role="alert"></div>
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                @await Component.InvokeAsync("OrderAddress", new { model = Model })
+            </div>
+            <div class="col-lg-4">
+                @await Component.InvokeAsync("OrderSummary")
+                @await Component.InvokeAsync("PaymentMethod")
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

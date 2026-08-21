@@ -1,0 +1,18 @@
+@model UserDetailViewModel
+
+@{
+    var fullName = $"{Model.Name} {Model.Surname}".Trim();
+    var displayName = string.IsNullOrWhiteSpace(fullName) ? Model.UserName : fullName;
+    var avatarLetter = string.IsNullOrWhiteSpace(displayName) ? "K" : displayName[..1].ToUpperInvariant();
+}
+
+<header class="user-area-navbar">
+    <div>
+        <p class="user-area-eyebrow">@DateTime.Today.ToString("dd.MM.yyyy")</p>
+        <h1>@ViewData["Title"]</h1>
+    </div>
+    <div class="user-area-user">
+        <span class="user-area-avatar">@avatarLetter</span>
+        <div><strong>@displayName</strong><small>@Model.Email</small></div>
+    </div>
+</header>

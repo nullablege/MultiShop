@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "Kartla Ödeme";
+    ViewData["Breadcrumbs"] = new BreadcrumbItemViewModel[]
+    {
+        new("Ana Sayfa", "Home", "Index"),
+        new("Sipariş", "Order", "Index"),
+        new("Kartla Ödeme")
+    };
+}
+
+<link rel="stylesheet" href="~/css/payment-card.css" asp-append-version="true" />
+
+<div class="container-fluid py-5">
+    <div class="row px-xl-5 justify-content-center">
+        <div class="col-xl-10">
+            <div class="payment-demo-notice" role="note">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                Bu ekran yalnızca arayüz demosudur. Girilen bilgiler sunucuya gönderilmez ve kaydedilmez.
+            </div>
+
+            <div class="payment-card-page">
+                <div class="payment-card-stage" aria-live="polite">
+                    <div class="payment-card" id="payment-card-preview">
+                        <div class="payment-card-face payment-card-front">
+                            <div class="payment-card-brand-row"><span class="payment-card-chip"></span><span class="payment-card-brand">MULTISHOP</span></div>
+                            <div class="payment-card-number" id="payment-card-number-preview">•••• •••• •••• ••••</div>
+                            <div class="payment-card-meta">
+                                <div><span>Kart sahibi</span><strong id="payment-card-holder-preview">AD SOYAD</strong></div>
+                                <div><span>Son kullanma</span><strong><span id="payment-card-month-preview">AA</span>/<span id="payment-card-year-preview">YY</span></strong></div>
+                            </div>
+                        </div>
+                        <div class="payment-card-face payment-card-back">
+                            <div class="payment-card-stripe"></div>
+                            <div class="payment-card-cvv-label">CVV</div>
+                            <div class="payment-card-cvv" id="payment-card-cvv-preview"></div>
+                            <div class="payment-card-back-brand">MULTISHOP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="payment-card-form" id="payment-card-form" autocomplete="off">
+                    <h3>Kart bilgileri</h3>
+                    <div class="form-group">
+                        <label for="payment-card-number-input">Kart numarası</label>
+                        <input class="form-control" id="payment-card-number-input" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-card-holder-input">Kart sahibi</label>
+                        <input class="form-control" id="payment-card-holder-input" maxlength="40" placeholder="Ad Soyad" type="text" />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="payment-card-month-input">Ay</label>
+                            <select class="form-control" id="payment-card-month-input">
+                                <option value="">Seçiniz</option>
+                                @for (var month = 1; month <= 12; month++)
+                                {
+                                    <option value="@month.ToString("00")">@month.ToString("00")</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="payment-card-year-input">Yıl</label>
+                            <select class="form-control" id="payment-card-year-input">
+                                <option value="">Seçiniz</option>
+                                @for (var year = DateTime.UtcNow.Year; year <= DateTime.UtcNow.Year + 10; year++)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="payment-card-cvv-input">CVV</label>
+                            <input class="form-control" id="payment-card-cvv-input" inputmode="numeric" maxlength="3" placeholder="•••" type="password" />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block py-3" type="button" disabled>Ödeme akışı sonraki adımda bağlanacak</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/payment-card.js" asp-append-version="true"></script>
+}

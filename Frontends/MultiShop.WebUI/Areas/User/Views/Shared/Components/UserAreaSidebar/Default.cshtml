@@ -1,0 +1,16 @@
+<aside class="user-area-sidebar">
+    <a class="user-area-brand" asp-area="" asp-controller="Home" asp-action="Index"><span>Multi</span>Shop</a>
+    <p class="user-area-menu-label">HESABIM</p>
+    <nav aria-label="Kullanıcı paneli">
+        <a asp-area="User" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-home"></i><span>Genel Bakış</span></a>
+        <a asp-area="User" asp-controller="MyOrders" asp-action="Index"><i class="fas fa-shopping-bag"></i><span>Siparişlerim</span></a>
+        <a asp-area="User" asp-controller="Message" asp-action="Inbox"><i class="fas fa-inbox"></i><span>Gelen Mesajlar</span></a>
+        <a asp-area="User" asp-controller="Message" asp-action="Sent"><i class="fas fa-paper-plane"></i><span>Gönderilen Mesajlar</span></a>
+        <a asp-area="" asp-controller="Profile" asp-action="Index"><i class="fas fa-user"></i><span>Profilim</span></a>
+        <a asp-area="" asp-controller="Cart" asp-action="Index"><i class="fas fa-shopping-cart"></i><span>Sepetim</span></a>
+        <a asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-store"></i><span>Mağazaya Dön</span></a>
+    </nav>
+    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+        <button class="user-area-logout" type="submit"><i class="fas fa-sign-out-alt"></i><span>Çıkış Yap</span></button>
+    </form>
+</aside>
