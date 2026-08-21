@@ -1,0 +1,24 @@
+@model IReadOnlyList<BreadcrumbItemViewModel>
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30" aria-label="Sayfa yolu">
+                @for (var index = 0; index < Model.Count; index++)
+                {
+                    var item = Model[index];
+                    var isActive = index == Model.Count - 1;
+
+                    @if (isActive || string.IsNullOrWhiteSpace(item.Controller) || string.IsNullOrWhiteSpace(item.Action))
+                    {
+                        <span class="breadcrumb-item active" aria-current="@(isActive ? "page" : null)">@item.Text</span>
+                    }
+                    else
+                    {
+                        <a class="breadcrumb-item text-dark" asp-controller="@item.Controller" asp-action="@item.Action">@item.Text</a>
+                    }
+                }
+            </nav>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,16 @@
+@model MultiShop.WebUI.Models.Catalog.ContactDTOs.CreateContactDto
+
 @{
     ViewData["Title"] = "İletişim";
+    ViewData["Breadcrumbs"] = new BreadcrumbItemViewModel[]
+    {
+        new("Ana Sayfa", "Home", "Index"),
+        new("İletişim")
+    };
 }
 
-<div class="container-fluid"><div class="row px-xl-5"><div class="col-12"><nav class="breadcrumb bg-light mb-30"><a class="breadcrumb-item text-dark" asp-controller="Home" asp-action="Index">Ana Sayfa</a><span class="breadcrumb-item active">İletişim</span></nav></div></div></div>
-<div class="container-fluid"><div class="row px-xl-5"><div class="col-lg-7 mb-5"><div class="contact-form bg-light p-30"><h4 class="mb-4">Bize Ulaşın</h4><form><div class="control-group mb-3"><input class="form-control" placeholder="Adınız" /></div><div class="control-group mb-3"><input class="form-control" type="email" placeholder="E-posta adresiniz" /></div><div class="control-group mb-3"><input class="form-control" placeholder="Konu" /></div><div class="control-group mb-3"><textarea class="form-control" rows="6" placeholder="Mesajınız"></textarea></div><button class="btn btn-primary py-2 px-4" type="button">Gönder</button></form></div></div><div class="col-lg-5 mb-5"><div class="bg-light p-30"><h5 class="font-weight-semi-bold mb-3">İletişim Bilgileri</h5><p>İletişim verileri ilgili servis ve içerik yönetimi hazır olduğunda dinamikleştirilecek.</p><p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>iletisim@multishop.local</p></div></div></div></div>
+<div class="container-fluid"><div class="row px-xl-5"><div class="col-lg-7 mb-5"><div class="contact-form bg-light p-30"><h4 class="mb-4">Bize Ulaşın</h4>@if (TempData["ContactSuccess"] is string successMessage){<div class="alert alert-success" role="alert">@successMessage</div>}<form asp-action="Index" method="post"><div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div><div class="control-group mb-3"><input asp-for="NameSurname" class="form-control" placeholder="Adınız ve soyadınız" /><span asp-validation-for="NameSurname" class="text-danger"></span></div><div class="control-group mb-3"><input asp-for="Email" class="form-control" placeholder="E-posta adresiniz" /><span asp-validation-for="Email" class="text-danger"></span></div><div class="control-group mb-3"><input asp-for="Subject" class="form-control" placeholder="Konu" /><span asp-validation-for="Subject" class="text-danger"></span></div><div class="control-group mb-3"><textarea asp-for="Message" class="form-control" rows="6" placeholder="Mesajınız"></textarea><span asp-validation-for="Message" class="text-danger"></span></div><button class="btn btn-primary py-2 px-4" type="submit">Gönder</button></form></div></div><div class="col-lg-5 mb-5"><div class="bg-light p-30"><h5 class="font-weight-semi-bold mb-3">İletişim Bilgileri</h5><p>İletişim verileri ilgili servis ve içerik yönetimi hazır olduğunda dinamikleştirilecek.</p><p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>iletisim@multishop.local</p></div></div></div></div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

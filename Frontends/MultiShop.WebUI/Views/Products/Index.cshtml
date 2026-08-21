@@ -1,18 +1,12 @@
 @model IReadOnlyList<ResultProductDto>
 @{
     ViewData["Title"] = "Ürünler";
+    ViewData["Breadcrumbs"] = new BreadcrumbItemViewModel[]
+    {
+        new("Ana Sayfa", "Home", "Index"),
+        new("Ürünler")
+    };
 }
-
-<div class="container-fluid">
-    <div class="row px-xl-5">
-        <div class="col-12">
-            <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
-                <span class="breadcrumb-item active">Ürünler</span>
-            </nav>
-        </div>
-    </div>
-</div>
 
 <div class="container-fluid">
     <div class="row px-xl-5">
