@@ -21,6 +21,7 @@ using MultiShop.WebUI.Services.CargoServices;
 using MultiShop.WebUI.Services.DiscountServices;
 using MultiShop.WebUI.Services.MessageServices;
 using MultiShop.WebUI.Services.OrderServices;
+using MultiShop.WebUI.Services.StatisticServices;
 using MultiShop.WebUI.Services.UserServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -222,6 +223,52 @@ builder.Services
         client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Comment.Path);
     })
     .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient(AdminStatisticsService.IdentityClientName, client =>
+    {
+        client.BaseAddress = new Uri(identityProviderSettings.Authority.TrimEnd('/') + "/");
+        client.Timeout = TimeSpan.FromSeconds(10);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient(AdminStatisticsService.CatalogClientName, (serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
+        client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Catalog.Path);
+        client.Timeout = TimeSpan.FromSeconds(10);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient(AdminStatisticsService.CommentClientName, (serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
+        client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Comment.Path);
+        client.Timeout = TimeSpan.FromSeconds(10);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient(AdminStatisticsService.DiscountClientName, (serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
+        client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Discount.Path);
+        client.Timeout = TimeSpan.FromSeconds(10);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient(AdminStatisticsService.MessageClientName, (serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
+        client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Message.Path);
+        client.Timeout = TimeSpan.FromSeconds(10);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services.AddScoped<IAdminStatisticsService, AdminStatisticsService>();
 
 builder.Services
     .AddHttpClient<IAdminUserService, AdminUserService>(client =>

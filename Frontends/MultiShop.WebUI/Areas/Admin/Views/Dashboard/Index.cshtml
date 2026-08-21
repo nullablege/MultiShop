@@ -1,9 +1,33 @@
+@model MultiShop.WebUI.Models.StatisticDTOs.AdminDashboardStatisticsViewModel
+
 @{
     ViewData["Title"] = "Dashboard";
+    var error = ViewData["StatisticsError"] as string;
+}
+
+@if (!string.IsNullOrWhiteSpace(error))
+{
+    <div class="alert alert-warning">@error</div>
 }
 
 <div class="row">
-    <div class="col-lg-4 col-xs-6"><div class="info-box"><span class="info-box-icon bg-green"><i class="icon-basket"></i></span><div class="info-box-content"><span class="info-box-text">Siparişler</span><span class="info-box-number">API bağlantısı bekleniyor</span></div></div></div>
-    <div class="col-lg-4 col-xs-6"><div class="info-box"><span class="info-box-icon bg-blue"><i class="icon-grid"></i></span><div class="info-box-content"><span class="info-box-text">Kategoriler</span><span class="info-box-number">API bağlantısı bekleniyor</span></div></div></div>
-    <div class="col-lg-4 col-xs-6"><div class="info-box"><span class="info-box-icon bg-orange"><i class="icon-graph"></i></span><div class="info-box-content"><span class="info-box-text">Ciro</span><span class="info-box-number">API bağlantısı bekleniyor</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-blue"><i class="icon-basket"></i></span><div class="info-box-content"><span class="info-box-text">Ürünler</span><span class="info-box-number">@Model.ProductCount</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-green"><i class="icon-grid"></i></span><div class="info-box-content"><span class="info-box-text">Kategoriler</span><span class="info-box-number">@Model.CategoryCount</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-yellow"><i class="icon-briefcase"></i></span><div class="info-box-content"><span class="info-box-text">Markalar</span><span class="info-box-number">@Model.BrandCount</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-aqua"><i class="icon-people"></i></span><div class="info-box-content"><span class="info-box-text">Kullanıcılar</span><span class="info-box-number">@Model.UserCount</span></div></div></div>
 </div>
+
+<div class="row">
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-purple"><i class="icon-bubble"></i></span><div class="info-box-content"><span class="info-box-text">Toplam Yorum</span><span class="info-box-number">@Model.TotalCommentCount</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-green"><i class="icon-check"></i></span><div class="info-box-content"><span class="info-box-text">Onaylı Yorum</span><span class="info-box-number">@Model.ApprovedCommentCount</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-orange"><i class="icon-clock"></i></span><div class="info-box-content"><span class="info-box-text">Bekleyen Yorum</span><span class="info-box-number">@Model.PendingCommentCount</span></div></div></div>
+    <div class="col-lg-3 col-xs-6"><div class="info-box"><span class="info-box-icon bg-red"><i class="icon-envelope"></i></span><div class="info-box-content"><span class="info-box-text">Mesajlar</span><span class="info-box-number">@Model.TotalMessageCount</span></div></div></div>
+</div>
+
+<div class="row">
+    <div class="col-md-4"><div class="box box-primary"><div class="box-header with-border"><h3 class="box-title">Ortalama Ürün Fiyatı</h3></div><div class="box-body"><strong>@Model.AverageProductPrice.ToString("N2") ₺</strong></div></div></div>
+    <div class="col-md-4"><div class="box box-success"><div class="box-header with-border"><h3 class="box-title">En Yüksek Fiyatlı Ürün</h3></div><div class="box-body">@(string.IsNullOrWhiteSpace(Model.MostExpensiveProductName) ? "Ürün bulunmuyor." : Model.MostExpensiveProductName)</div></div></div>
+    <div class="col-md-4"><div class="box box-warning"><div class="box-header with-border"><h3 class="box-title">En Düşük Fiyatlı Ürün</h3></div><div class="box-body">@(string.IsNullOrWhiteSpace(Model.LeastExpensiveProductName) ? "Ürün bulunmuyor." : Model.LeastExpensiveProductName)</div></div></div>
+</div>
+
+<div class="row"><div class="col-md-4"><div class="info-box"><span class="info-box-icon bg-navy"><i class="icon-tag"></i></span><div class="info-box-content"><span class="info-box-text">Kuponlar</span><span class="info-box-number">@Model.DiscountCouponCount</span></div></div></div></div>
