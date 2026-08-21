@@ -1,0 +1,62 @@
+@model IReadOnlyList<InboxMessageDto>
+
+@{
+    ViewData["Title"] = "Gelen Mesajlar";
+}
+
+<section class="user-area-panel">
+    <div class="user-area-panel-heading">
+        <div><p>MESAJLAR</p><h2>Gelen mesajlar</h2></div>
+        <span>@Model.Count kayıt</span>
+    </div>
+
+    @if (TempData["MessageError"] is string errorMessage)
+    {
+        <div class="alert alert-danger" role="alert">@errorMessage</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="user-area-empty">
+            <i class="fas fa-inbox"></i>
+            <h3>Gelen mesaj bulunmuyor</h3>
+            <p>Yeni bir mesaj geldiğinde burada görüntülenecek.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead>
+                    <tr><th>#</th><th>Gönderen</th><th>Konu</th><th>Mesaj</th><th>Tarih</th><th>Durum</th></tr>
+                </thead>
+                <tbody>
+                    @for (var index = 0; index < Model.Count; index++)
+                    {
+                        var message = Model[index];
+                        <tr class="@(message.IsRead ? string.Empty : "table-warning")">
+                            <th>@(index + 1)</th>
+                            <td>@message.SenderId</td>
+                            <td>@message.Subject</td>
+                            <td>@message.MessageDetail</td>
+                            <td>@message.CreatedAtUtc.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                @if (message.IsRead)
+                                {
+                                    <span class="badge badge-success">Okundu</span>
+                                }
+                                else
+                                {
+                                    <form asp-area="User" asp-controller="Message" asp-action="MarkAsRead" method="post">
+                                        <input type="hidden" name="messageId" value="@message.UserMessageId" />
+                                        <button class="btn btn-sm btn-dark" type="submit">Okundu işaretle</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
