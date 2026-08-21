@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MultiShop.Identity.Authorization;
 using MultiShop.Identity.Configuration;
 using MultiShop.Identity.Data;
@@ -26,6 +28,21 @@ builder.Services
     .AddDefaultIdentity<AppUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MultiShopIdentityDbContext>();
+
+builder.Services
+    .AddOptions<SmtpEmailOptions>()
+    .BindConfiguration(SmtpEmailOptions.SectionName)
+    .Validate(options => !string.IsNullOrWhiteSpace(options.Host), "SMTP sunucu adresi zorunludur.")
+    .Validate(options => options.Port is > 0 and <= 65535, "SMTP portu 1-65535 aralığında olmalıdır.")
+    .Validate(options => !string.IsNullOrWhiteSpace(options.SenderEmail), "Gönderen e-posta adresi zorunludur.")
+    .Validate(options => options.TimeoutSeconds is > 0 and <= 120, "SMTP zaman aşımı 1-120 saniye aralığında olmalıdır.")
+    .Validate(
+        options => !options.UseAuthentication ||
+                   (!string.IsNullOrWhiteSpace(options.UserName) && !string.IsNullOrWhiteSpace(options.Password)),
+        "SMTP kimlik doğrulaması için kullanıcı adı ve parola zorunludur.")
+    .ValidateOnStart();
+
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
 builder.Services.AddOpenIddict()
     .AddCore(options =>
