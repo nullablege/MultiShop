@@ -23,6 +23,13 @@ namespace MultiShop.Cargo.BusinessLayer.Concrete
             return await _cargoCustomerDal.GetByIdAsync(id, cancellationToken);
         }
 
+        public async Task<CargoCustomer?> GetByUserIdAsync(
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            return await _cargoCustomerDal.GetByUserIdAsync(userId, cancellationToken);
+        }
+
         public async Task<CargoCustomer> CreateAsync(CargoCustomer entity, CancellationToken cancellationToken = default)
         {
             return await _cargoCustomerDal.CreateAsync(entity, cancellationToken);

@@ -39,6 +39,38 @@ namespace MultiShop.Cargo.WebApi.Controllers
             return Ok(cargoCustomer);
         }
 
+        [HttpGet("by-user/{userId}")]
+        public async Task<ActionResult<CargoCustomerDetailDto>> GetByUserIdAsync(
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest();
+            }
+
+            var cargoCustomer = await _cargoCustomerService
+                .GetByUserIdAsync(userId, cancellationToken);
+
+            if (cargoCustomer is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new CargoCustomerDetailDto
+            {
+                CargoCustomerId = cargoCustomer.CargoCustomerId,
+                Name = cargoCustomer.Name,
+                Surname = cargoCustomer.Surname,
+                Email = cargoCustomer.Email,
+                Phone = cargoCustomer.Phone,
+                District = cargoCustomer.District,
+                City = cargoCustomer.City,
+                Address = cargoCustomer.Address,
+                UserCustomerId = cargoCustomer.UserCustomerId
+            });
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateAsync(CreateCargoCustomerDto createCargoCustomerDto, CancellationToken cancellationToken = default)
         {

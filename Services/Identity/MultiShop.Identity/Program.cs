@@ -157,6 +157,19 @@ builder.Services.AddAuthorization(options =>
                 context.User.HasScope(
                     IdentityAuthorizationConstants.IdentityApiScope));
         });
+
+    options.AddPolicy(
+        IdentityAuthorizationConstants.ManagementPolicy,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireAssertion(context =>
+                context.User.HasScope(
+                    IdentityAuthorizationConstants.IdentityApiScope));
+            policy.RequireRole(
+                IdentityAuthorizationConstants.AdminRole,
+                IdentityAuthorizationConstants.ManagerRole);
+        });
 });
 
 var app = builder.Build();

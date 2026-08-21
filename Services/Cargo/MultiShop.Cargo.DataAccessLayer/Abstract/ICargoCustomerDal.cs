@@ -4,5 +4,8 @@ namespace MultiShop.Cargo.DataAccessLayer.Abstract
 {
     public interface ICargoCustomerDal : IGenericDal<CargoCustomer>
     {
+        Task<CargoCustomer?> GetByUserIdAsync(
+            string userId,
+            CancellationToken cancellationToken = default);
     }
 }

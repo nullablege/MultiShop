@@ -1,0 +1,32 @@
+@model AdminUserCargoProfileViewModel
+
+@{
+    ViewData["Title"] = "Kargo Profili";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var name = $"{Model.User.Name} {Model.User.Surname}".Trim();
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">@(string.IsNullOrWhiteSpace(name) ? Model.User.UserName : name) — Kargo Profili</h3>
+    </div>
+    <div class="box-body">
+        @if (Model.CargoCustomer is null)
+        {
+            <p class="text-muted mb-0">Bu kullanıcı için henüz bir Cargo müşteri profili oluşturulmamış.</p>
+        }
+        else
+        {
+            <dl class="dl-horizontal">
+                <dt>Ad Soyad</dt><dd>@Model.CargoCustomer.Name @Model.CargoCustomer.Surname</dd>
+                <dt>E-posta</dt><dd>@Model.CargoCustomer.Email</dd>
+                <dt>Telefon</dt><dd>@Model.CargoCustomer.Phone</dd>
+                <dt>İl / İlçe</dt><dd>@Model.CargoCustomer.City / @Model.CargoCustomer.District</dd>
+                <dt>Adres</dt><dd>@Model.CargoCustomer.Address</dd>
+            </dl>
+        }
+    </div>
+    <div class="box-footer">
+        <a asp-action="Index" class="btn btn-default">Kullanıcı Listesine Dön</a>
+    </div>
+</div>

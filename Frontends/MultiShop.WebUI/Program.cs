@@ -17,6 +17,7 @@ using MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices;
 using MultiShop.WebUI.Services.CatalogServices.ProductServices;
 using MultiShop.WebUI.Services.CatalogServices.SpecialOfferServices;
 using MultiShop.WebUI.Services.CommentServices;
+using MultiShop.WebUI.Services.CargoServices;
 using MultiShop.WebUI.Services.DiscountServices;
 using MultiShop.WebUI.Services.MessageServices;
 using MultiShop.WebUI.Services.OrderServices;
@@ -110,6 +111,7 @@ builder.Services
         options.Scope.Add("comment_api");
         options.Scope.Add("discount_api");
         options.Scope.Add("identity_api");
+        options.Scope.Add("cargo_api");
         options.Scope.Add("order_api");
         options.Scope.Add("message_api");
     });
@@ -218,6 +220,29 @@ builder.Services
     {
         var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
         client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Comment.Path);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<IAdminUserService, AdminUserService>(client =>
+    {
+        client.BaseAddress = new Uri(identityProviderSettings.Authority.TrimEnd('/') + "/");
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<ICargoCompanyService, CargoCompanyService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
+        client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Cargo.Path);
+    })
+    .AddHttpMessageHandler<UserAccessTokenHandler>();
+
+builder.Services
+    .AddHttpClient<ICargoCustomerService, CargoCustomerService>((serviceProvider, client) =>
+    {
+        var options = serviceProvider.GetRequiredService<IOptions<ServiceApiOptions>>().Value;
+        client.BaseAddress = new Uri(new Uri(options.GatewayBaseUrl), options.Cargo.Path);
     })
     .AddHttpMessageHandler<UserAccessTokenHandler>();
 

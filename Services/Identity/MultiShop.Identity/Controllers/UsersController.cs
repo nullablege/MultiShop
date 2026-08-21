@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MultiShop.Identity.Authorization;
 using MultiShop.Identity.DTOs;
 using MultiShop.Identity.Models;
@@ -45,6 +46,29 @@ namespace MultiShop.Identity.Controllers
             };
             return Ok(dto);
 
+        }
+
+        [HttpGet]
+        [Authorize(
+            AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme,
+            Policy = IdentityAuthorizationConstants.ManagementPolicy)]
+        public async Task<ActionResult<IReadOnlyList<AdminUserListItemDto>>> GetAllAsync(
+            CancellationToken cancellationToken)
+        {
+            var users = await _userManager.Users
+                .AsNoTracking()
+                .OrderBy(user => user.UserName)
+                .Select(user => new AdminUserListItemDto
+                {
+                    Id = user.Id,
+                    UserName = user.UserName ?? string.Empty,
+                    Email = user.Email ?? string.Empty,
+                    Name = user.Name,
+                    Surname = user.Surname
+                })
+                .ToListAsync(cancellationToken);
+
+            return Ok(users);
         }
 
     }
