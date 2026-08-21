@@ -13,19 +13,19 @@ namespace MultiShop.WebUI.Services.CatalogServices.FeatureServices
 
         public async Task CreateAsync(CreateFeatureDto createFeatureDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/features", createFeatureDto, cancellationToken);
+            var result = await _httpClient.PostAsJsonAsync("features", createFeatureDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteAsync(string featureId, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.DeleteAsync("api/features/" + featureId, cancellationToken);
+            var result = await _httpClient.DeleteAsync("features/" + featureId, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task<IReadOnlyList<ResultFeatureDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ResultFeatureDto>>("api/features", cancellationToken);
+            var result = await _httpClient.GetFromJsonAsync<List<ResultFeatureDto>>("features", cancellationToken);
             if (result == null)
                 return Array.Empty<ResultFeatureDto>();
 
@@ -34,13 +34,13 @@ namespace MultiShop.WebUI.Services.CatalogServices.FeatureServices
 
         public async Task<UpdateFeatureDto?> GetByIdAsync(string featureId, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<UpdateFeatureDto>("api/features/" + featureId, cancellationToken);
+            return await _httpClient.GetFromJsonAsync<UpdateFeatureDto>("features/" + featureId, cancellationToken);
         }
 
         public async Task UpdateAsync(UpdateFeatureDto updateFeatureDto, CancellationToken cancellationToken = default)
         {
             var result = await _httpClient.PutAsJsonAsync(
-                "api/features/" + updateFeatureDto.FeatureId,
+                "features/" + updateFeatureDto.FeatureId,
                 updateFeatureDto,
                 cancellationToken);
 

@@ -16,7 +16,7 @@ namespace MultiShop.WebUI.Services.CommentServices
             CancellationToken cancellationToken = default)
         {
             var comments = await _httpClient.GetFromJsonAsync<List<AdminCommentListDto>>(
-                "api/comments/admin",
+                "comments/admin",
                 cancellationToken);
 
             if (comments == null)
@@ -30,7 +30,7 @@ namespace MultiShop.WebUI.Services.CommentServices
             CancellationToken cancellationToken = default)
         {
             var response = await _httpClient.GetAsync(
-                $"api/comments/admin/{commentId}",
+                $"comments/admin/{commentId}",
                 cancellationToken);
 
             if (response.StatusCode == HttpStatusCode.NotFound)
@@ -48,7 +48,7 @@ namespace MultiShop.WebUI.Services.CommentServices
             CancellationToken cancellationToken = default)
         {
             var response = await _httpClient.PutAsJsonAsync(
-                $"api/comments/admin/{commentId}/status",
+                $"comments/admin/{commentId}/status",
                 updateCommentStatusDto,
                 cancellationToken);
 
@@ -60,7 +60,7 @@ namespace MultiShop.WebUI.Services.CommentServices
             CancellationToken cancellationToken = default)
         {
             var response = await _httpClient.DeleteAsync(
-                $"api/comments/admin/{commentId}",
+                $"comments/admin/{commentId}",
                 cancellationToken);
 
             response.EnsureSuccessStatusCode();

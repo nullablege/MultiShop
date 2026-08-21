@@ -13,19 +13,19 @@ public sealed class BrandService : IBrandService
 
     public async Task CreateAsync(CreateBrandDto createBrandDto, CancellationToken cancellationToken = default)
     {
-        var result = await _httpClient.PostAsJsonAsync("api/brands", createBrandDto, cancellationToken);
+        var result = await _httpClient.PostAsJsonAsync("brands", createBrandDto, cancellationToken);
         result.EnsureSuccessStatusCode();
     }
 
     public async Task DeleteAsync(string brandId, CancellationToken cancellationToken = default)
     {
-        var result = await _httpClient.DeleteAsync("api/brands/" + brandId, cancellationToken);
+        var result = await _httpClient.DeleteAsync("brands/" + brandId, cancellationToken);
         result.EnsureSuccessStatusCode();
     }
 
     public async Task<IReadOnlyList<ResultBrandDto>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var result = await _httpClient.GetFromJsonAsync<List<ResultBrandDto>>("api/brands", cancellationToken);
+        var result = await _httpClient.GetFromJsonAsync<List<ResultBrandDto>>("brands", cancellationToken);
         if (result == null)
             return Array.Empty<ResultBrandDto>();
 
@@ -34,12 +34,12 @@ public sealed class BrandService : IBrandService
 
     public async Task<UpdateBrandDto?> GetByIdAsync(string brandId, CancellationToken cancellationToken = default)
     {
-        return await _httpClient.GetFromJsonAsync<UpdateBrandDto>("api/brands/" + brandId, cancellationToken);
+        return await _httpClient.GetFromJsonAsync<UpdateBrandDto>("brands/" + brandId, cancellationToken);
     }
 
     public async Task UpdateAsync(UpdateBrandDto updateBrandDto, CancellationToken cancellationToken = default)
     {
-        var result = await _httpClient.PutAsJsonAsync("api/brands/" + updateBrandDto.BrandId, updateBrandDto, cancellationToken);
+        var result = await _httpClient.PutAsJsonAsync("brands/" + updateBrandDto.BrandId, updateBrandDto, cancellationToken);
         result.EnsureSuccessStatusCode();
     }
 }

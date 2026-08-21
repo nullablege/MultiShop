@@ -13,24 +13,24 @@ namespace MultiShop.WebUI.Services.CatalogServices.CategoryServices
 
         public async Task CreateAsync(CreateCategoryDto createCategoryDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/categories", createCategoryDto, cancellationToken);
+            var result = await _httpClient.PostAsJsonAsync("categories", createCategoryDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteAsync(string categoryId, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.DeleteAsync("api/categories/" + categoryId, cancellationToken);
+            var result = await _httpClient.DeleteAsync("categories/" + categoryId, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task<UpdateCategoryDto?> GetByIdAsync(string categoryId, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<UpdateCategoryDto>("api/categories/" + categoryId, cancellationToken);
+            return await _httpClient.GetFromJsonAsync<UpdateCategoryDto>("categories/" + categoryId, cancellationToken);
         }
 
         public async Task<IReadOnlyList<ResultCategoryDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ResultCategoryDto>>("api/categories", cancellationToken);
+            var result = await _httpClient.GetFromJsonAsync<List<ResultCategoryDto>>("categories", cancellationToken);
             if (result == null)
                 return Array.Empty<ResultCategoryDto>();
 
@@ -39,7 +39,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.CategoryServices
 
         public async Task UpdateAsync(UpdateCategoryDto updateCategoryDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PutAsJsonAsync("api/categories/" + updateCategoryDto.CategoryId, updateCategoryDto, cancellationToken);
+            var result = await _httpClient.PutAsJsonAsync("categories/" + updateCategoryDto.CategoryId, updateCategoryDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
     }

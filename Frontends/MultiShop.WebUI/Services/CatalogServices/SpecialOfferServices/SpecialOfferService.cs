@@ -13,19 +13,19 @@ namespace MultiShop.WebUI.Services.CatalogServices.SpecialOfferServices
 
         public async Task CreateAsync(CreateSpecialOfferDto createSpecialOfferDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/specialoffers", createSpecialOfferDto, cancellationToken);
+            var result = await _httpClient.PostAsJsonAsync("specialoffers", createSpecialOfferDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteAsync(string specialOfferId, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.DeleteAsync("api/specialoffers/" + specialOfferId, cancellationToken);
+            var result = await _httpClient.DeleteAsync("specialoffers/" + specialOfferId, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task<IReadOnlyList<ResultSpecialOfferDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ResultSpecialOfferDto>>("api/specialoffers", cancellationToken);
+            var result = await _httpClient.GetFromJsonAsync<List<ResultSpecialOfferDto>>("specialoffers", cancellationToken);
             if (result == null)
                 return Array.Empty<ResultSpecialOfferDto>();
 
@@ -34,13 +34,13 @@ namespace MultiShop.WebUI.Services.CatalogServices.SpecialOfferServices
 
         public async Task<UpdateSpecialOfferDto?> GetByIdAsync(string specialOfferId, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<UpdateSpecialOfferDto>("api/specialoffers/" + specialOfferId, cancellationToken);
+            return await _httpClient.GetFromJsonAsync<UpdateSpecialOfferDto>("specialoffers/" + specialOfferId, cancellationToken);
         }
 
         public async Task UpdateAsync(UpdateSpecialOfferDto updateSpecialOfferDto, CancellationToken cancellationToken = default)
         {
             var result = await _httpClient.PutAsJsonAsync(
-                "api/specialoffers/" + updateSpecialOfferDto.SpecialOfferId,
+                "specialoffers/" + updateSpecialOfferDto.SpecialOfferId,
                 updateSpecialOfferDto,
                 cancellationToken);
 

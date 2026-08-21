@@ -13,19 +13,19 @@ namespace MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices
 
         public async Task CreateAsync(CreateOfferDiscountDto createOfferDiscountDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/offerdiscounts", createOfferDiscountDto, cancellationToken);
+            var result = await _httpClient.PostAsJsonAsync("offerdiscounts", createOfferDiscountDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteAsync(string offerDiscountId, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.DeleteAsync("api/offerdiscounts/" + offerDiscountId, cancellationToken);
+            var result = await _httpClient.DeleteAsync("offerdiscounts/" + offerDiscountId, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task<IReadOnlyList<ResultOfferDiscountDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ResultOfferDiscountDto>>("api/offerdiscounts", cancellationToken);
+            var result = await _httpClient.GetFromJsonAsync<List<ResultOfferDiscountDto>>("offerdiscounts", cancellationToken);
             if (result == null)
                 return Array.Empty<ResultOfferDiscountDto>();
 
@@ -34,12 +34,12 @@ namespace MultiShop.WebUI.Services.CatalogServices.OfferDiscountServices
 
         public async Task<UpdateOfferDiscountDto?> GetByIdAsync(string offerDiscountId, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<UpdateOfferDiscountDto>("api/offerdiscounts/" + offerDiscountId, cancellationToken);
+            return await _httpClient.GetFromJsonAsync<UpdateOfferDiscountDto>("offerdiscounts/" + offerDiscountId, cancellationToken);
         }
 
         public async Task UpdateAsync(UpdateOfferDiscountDto updateOfferDiscountDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PutAsJsonAsync("api/offerdiscounts/" + updateOfferDiscountDto.OfferDiscountId, updateOfferDiscountDto, cancellationToken);
+            var result = await _httpClient.PutAsJsonAsync("offerdiscounts/" + updateOfferDiscountDto.OfferDiscountId, updateOfferDiscountDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
     }

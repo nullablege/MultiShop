@@ -16,7 +16,7 @@ namespace MultiShop.WebUI.Services.CommentServices
             CancellationToken cancellationToken = default)
         {
             var response = await _httpClient.PostAsJsonAsync(
-                "api/comments",
+                "comments",
                 createCommentDto,
                 cancellationToken);
 
@@ -28,7 +28,7 @@ namespace MultiShop.WebUI.Services.CommentServices
             CancellationToken cancellationToken = default)
         {
             var comments = await _httpClient.GetFromJsonAsync<List<ResultCommentDto>>(
-                $"api/comments/by-product/{Uri.EscapeDataString(productId)}",
+                $"comments/by-product/{Uri.EscapeDataString(productId)}",
                 cancellationToken);
 
             if (comments == null)

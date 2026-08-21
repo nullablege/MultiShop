@@ -13,19 +13,19 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
 
         public async Task CreateAsync(CreateProductDto createProductDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/products", createProductDto, cancellationToken);
+            var result = await _httpClient.PostAsJsonAsync("products", createProductDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteAsync(string productId, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.DeleteAsync("api/products/" + productId, cancellationToken);
+            var result = await _httpClient.DeleteAsync("products/" + productId, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task<IReadOnlyList<ResultProductDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ResultProductDto>>("api/products", cancellationToken);
+            var result = await _httpClient.GetFromJsonAsync<List<ResultProductDto>>("products", cancellationToken);
             if (result == null)
                 return Array.Empty<ResultProductDto>();
 
@@ -34,7 +34,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
 
         public async Task<IReadOnlyList<ResultProductWithCategoryDto>> GetWithCategoryAsync(CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ResultProductWithCategoryDto>>("api/products/with-category", cancellationToken);
+            var result = await _httpClient.GetFromJsonAsync<List<ResultProductWithCategoryDto>>("products/with-category", cancellationToken);
             if (result == null)
                 return Array.Empty<ResultProductWithCategoryDto>();
 
@@ -43,18 +43,18 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
 
         public async Task<GetByIdProductDto?> GetByIdAsync(string productId, CancellationToken cancellationToken = default)
         {
-            return await _httpClient.GetFromJsonAsync<GetByIdProductDto>("api/products/" + productId, cancellationToken);
+            return await _httpClient.GetFromJsonAsync<GetByIdProductDto>("products/" + productId, cancellationToken);
         }
 
         public async Task UpdateAsync(UpdateProductDto updateProductDto, CancellationToken cancellationToken = default)
         {
-            var result = await _httpClient.PutAsJsonAsync("api/products/" + updateProductDto.ProductId, updateProductDto, cancellationToken);
+            var result = await _httpClient.PutAsJsonAsync("products/" + updateProductDto.ProductId, updateProductDto, cancellationToken);
             result.EnsureSuccessStatusCode();
         }
 
         public async Task<IReadOnlyList<ResultProductDto>> GetByCategoryIdAsync(string categoryId, CancellationToken cancellationToken = default)
         {
-            var result =  await _httpClient.GetFromJsonAsync<List<ResultProductDto>>("api/products/by-category/" + categoryId, cancellationToken);
+            var result =  await _httpClient.GetFromJsonAsync<List<ResultProductDto>>("products/by-category/" + categoryId, cancellationToken);
             if(result == null)
                 return Array.Empty<ResultProductDto>();
 
@@ -63,7 +63,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
 
         public async Task<UpdateProductDto?> GetForUpdateAsync(string productId, CancellationToken cancellation = default)
         {
-            var result = await _httpClient.GetFromJsonAsync<UpdateProductDto>("api/products/"+productId, cancellation);
+            var result = await _httpClient.GetFromJsonAsync<UpdateProductDto>("products/"+productId, cancellation);
             return result;
         }
     }
