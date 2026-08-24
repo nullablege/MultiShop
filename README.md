@@ -2,6 +2,48 @@
 
 MultiShop; ürün yönetimi, sepet, indirim, sipariş, kargo, yorum ve kullanıcı mesajlaşması gibi temel e-ticaret süreçlerini bağımsız servisler üzerinden yöneten, .NET 8 tabanlı bir mikroservis uygulamasıdır. Mağaza ve yönetim panellerini aynı sistemde buluştururken her servisin kendi iş alanına ve veri sorumluluğuna sahip olmasını amaçlar.
 
+## Proje Görselleri
+
+<p align="center">
+  <img src="docs/images/storefront-home.png" alt="MultiShop mağaza ana sayfası" width="100%" />
+  <br />
+  <sub><b>Mağaza ana sayfası</b></sub>
+</p>
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="docs/images/storefront-products.png" alt="MultiShop ürün listesi" />
+      <br />
+      <sub><b>Ürün listesi</b></sub>
+    </td>
+    <td width="50%">
+      <img src="docs/images/storefront-product-detail.png" alt="MultiShop ürün detay sayfası" />
+      <br />
+      <sub><b>Ürün detay sayfası</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/images/storefront-cart.png" alt="MultiShop sepet sayfası" />
+      <br />
+      <sub><b>Sepet ve kupon işlemleri</b></sub>
+    </td>
+    <td width="50%">
+      <img src="docs/images/storefront-checkout.png" alt="MultiShop ödeme sayfası" />
+      <br />
+      <sub><b>Sipariş ve ödeme ekranı</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <img src="docs/images/admin-theme-dashboard.png" alt="MultiShop admin paneli tema görünümü" />
+      <br />
+      <sub><b>Admin paneli tema görünümü</b></sub>
+    </td>
+  </tr>
+</table>
+
 ## Öne Çıkan Üç Teknik Karar
 
 - **Modern kimlik altyapısı:** Kullanıcı oturumları OpenIddict, Authorization Code + PKCE ve refresh token akışıyla; servis çağrıları ise kullanıcı token'ı veya client credentials token'ı ile yönetildi.
@@ -123,6 +165,8 @@ MultiShop
 │   └── MultiShop.OcelotGateway
 ├── Frontends
 │   └── MultiShop.WebUI
+├── docs
+│   └── images
 ├── Services
 │   ├── Basket
 │   ├── Cargo
